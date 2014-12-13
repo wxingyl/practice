@@ -1,5 +1,6 @@
 #ifndef _LINKED_LIST_H_INCLUDED
 #define _LINKED_LIST_H_INCLUDED
+
 typedef struct node
 {
     struct node *pre;
@@ -15,4 +16,5 @@ Node* link_append(Node* head, int value);
 void link_clear(Node *head);
 
 void link_print(Node *head);
+
 #endif // LINKED_LIST_H_INCLUDED
