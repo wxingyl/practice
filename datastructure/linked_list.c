@@ -29,6 +29,20 @@ Node* link_append(Node* head, int value)
 	tail->next = p;
 	return head;
 }
+//Á´±íÍ·²åÈëvalue
+Node* link_push(Node *head, int value)
+{
+    Node *first = head->next;
+    Node *p = (Node *)malloc(sizeof(Node));
+    if (p == NULL){
+        printf("memory error!");
+        return NULL;
+    }
+    p->value = value;
+    head->next = p;
+    p->next = first;
+    return head;
+}
 
 void link_clear(Node *head)
 {
