@@ -17,6 +17,7 @@ void link_test()
 void stack_test()
 {
 	Node *top = stack_push(NULL, 100);
+	printf("stack top->value: %d\n", top->value);
 }
 
 int main()
