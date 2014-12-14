@@ -16,8 +16,7 @@ void link_test()
 
 void stack_test()
 {
-	Node *top = stack_push(NULL, 100);	
-	
+	Node *top = stack_push(NULL, 100);
 }
 
 int main()
