@@ -33,3 +33,8 @@ Node* stack_pop(Node* top)
     return top;
 }
 
+void stack_clear(Node *top)
+{
+    while((top = stack_pop(top)) != NULL);
+}
+
