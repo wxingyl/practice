@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "linked_list.h"
+#include "datastructure/linked_list.h"
 
 void link_test()
 {
@@ -15,6 +15,6 @@ void link_test()
 
 int main()
 {
-
+	printf("Hello World!\n");
 	return 0;
 }

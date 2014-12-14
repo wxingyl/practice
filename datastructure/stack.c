@@ -1,13 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "stack.h"
+
 Node *stack_create()
 {
-//    Node *top = (Node *)malloc(sizeof(Node));
-//    if (top == NULL){
-//        printf("memory error");
-//        return NULL;
-//    }
-//    top->next = NULL;
     return NULL;
 }
 
@@ -27,6 +23,10 @@ Node* stack_push(Node* top, int value)
 
 Node* stack_pop(Node* top)
 {
+	if (!top) {
+		printf("stack is empty!\n");
+		return NULL;
+	}
     Node *p = top;
     top = top->next;
     free(p);
