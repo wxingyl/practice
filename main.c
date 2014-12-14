@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "datastructure/linked_list.h"
+#include "datastructure/stack.h"
 
 void link_test()
 {
@@ -11,6 +12,12 @@ void link_test()
 	}
     link_print(head);
     link_clear(head);
+}
+
+void stack_test()
+{
+	Node *top = stack_push(NULL, 100);	
+	
 }
 
 int main()
