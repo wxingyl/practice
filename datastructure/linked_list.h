@@ -12,4 +12,6 @@ void link_clear(Node *head);
 
 void link_print(Node *head);
 
+void link_destory(Node* head);
+
 #endif // LINKED_LIST_H_INCLUDED

@@ -54,8 +54,14 @@ void link_clear(Node *head)
 		free(p);
 		head->next = pre;
 	}
-	free(head);
-	head = NULL;
+}
+
+void link_destory(Node* head)
+{
+
+    link_clear(head);
+    free(head);
+    head = NULL;
 }
 
 void link_print(Node *head)

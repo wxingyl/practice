@@ -23,5 +23,6 @@ void stack_test()
 int main()
 {
 	printf("Hello World!\n");
+	stack_test();
 	return 0;
 }
