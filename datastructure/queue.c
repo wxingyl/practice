@@ -23,8 +23,8 @@ Queue* queue_add(Queue *q, int value)
 		return NULL;
 	}
 	p->value = value;
-	first->next = p;
-	first = p;
+	last->next = p;
+	last = p;
 	q->size++;
 	return q;
 }
@@ -32,8 +32,8 @@ Queue* queue_add(Queue *q, int value)
 Queue* queue_pop(Queue *q)
 {
     Queue *p
-    p = last;
-    p->next = last;
+    p = first;
+    p->next = first;
     free(p);
     q->size--;
     return q;
@@ -41,5 +41,6 @@ Queue* queue_pop(Queue *q)
 
 Queue* queue_clear(Queue *q)
 {
-    return q;
+    while(first->next != NULL)
+        first = queue_pop(q);
 }
