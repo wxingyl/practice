@@ -38,3 +38,8 @@ Queue* queue_pop(Queue *q)
     q->size--;
     return q;
 }
+
+Queue* queue_clear(Queue *q)
+{
+    return q;
+}
