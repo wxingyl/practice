@@ -22,9 +22,10 @@ Queue* queue_add(Queue *q, int value)
 		printf("memory error!\n");
 		return NULL;
 	}
-	p = first;
 	p->value = value;
-	q->size = size++;
+	first->next = p;
+	first = p;
+	q->size++;
 	return q;
 }
 
@@ -32,16 +33,8 @@ Queue* queue_pop(Queue *q)
 {
     Queue *p
     p = last;
-    last->next = last;
+    p->next = last;
     free(p);
+    q->size--;
     return q;
 }
-
-
-
-void queue_clear(Queue *q)
-{
-    while (first != NULL)
-        first = queue_pop(q);
-}
-
