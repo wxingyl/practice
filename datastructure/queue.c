@@ -23,6 +23,7 @@ Queue* queue_add(Queue *q, int value)
 		return NULL;
 	}
 	p->value = value;
+	p->next = NULL;
 	last->next = p;
 	last = p;
 	q->size++;
