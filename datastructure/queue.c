@@ -15,36 +15,51 @@ Queue* queue_create()
 	return q;
 }
 
-Queue* queue_add(Queue *q, int value)
+Queue* queue_push(Queue *q, int value)
 {
 	//插入节点的是Node对象，Queue只是封装得一个队列对象
 	//Queue对象中的first和last的Node指针对象是需要操作的
-	Queue* p = (Queue*)malloc(sizeof(Queue));
+	Node* p = (Node*)malloc(sizeof(Node));
 	if (!p) {
 		printf("memory error!\n");
 		return NULL;
 	}
-	//同样地这儿给Node的指针对象赋值
 	p->value = value;
-	p->next = NULL;
-	last->next = p;
-	last = p;
-	q->size++;
+	p->next = q->first;
+	q->first = p;
+	if (!q->size) {
+        q->last = q->first;
+	}
+	q->size += 1;
 	return q;
 }
 
-Queue* queue_pop(Queue *q)
+int queue_pop(Queue *q)
 {
-    Queue *p
-    p = first;
-    p->next = first;
-    free(p);
+    if (!q->size) {
+        printf("size is 0, can not pop\n");
+        return -1;
+    }
     q->size--;
-    return q;
+    Node *pre, *p;
+    pre = p = q->first;
+    while(p->next != NULL) {
+        pre = p;
+        p = p->next;
+    }
+    pre->next = NULL;
+    if (pre == p) {
+        q->last = NULL;
+        q->first = NULL;
+    } else {
+        q->last = pre;
+    }
+    int ret = p->value;
+    free(p);
+    return ret;
 }
 
-Queue* queue_clear(Queue *q)
+void queue_clear(Queue *q)
 {
-    while(first->next != NULL)
-        first = queue_pop(q);
+    while(q->size) queue_pop(q);
 }
