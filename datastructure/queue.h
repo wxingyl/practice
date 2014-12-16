@@ -15,6 +15,6 @@ Queue* queue_create();
 Queue* queue_add(Queue *q, int value);
 //从队列的尾删除元素
 Queue* queue_pop(Queue *q);
-
+//清空队列元素
 void queue_clear(Queue *q);
 #endif
