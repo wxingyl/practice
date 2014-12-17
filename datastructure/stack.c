@@ -1,4 +1,4 @@
-/*#include <stdlib.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "stack.h"
 
@@ -37,4 +37,3 @@ void stack_clear(Node *top)
 {
     while((top = stack_pop(top)) != NULL);
 }
-*/

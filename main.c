@@ -1,6 +1,9 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "datastructure/linked_list.h"
 #include "datastructure/stack.h"
+#include "datastructure/queue.h"
+#include "algorithm/random.h"
 
 void link_test()
 {
@@ -22,7 +25,16 @@ void stack_test()
 
 int main()
 {
-	printf("Hello World!\n");
+	int a[100];
+	init_rand(a, 100, 0, 10);
+	int i = 0;
+	for(; i < 100; i++)
+	{
+		printf("\t%d", a[i]);
+		if((i+1) % 10 == 0)
+			putchar('\n');
+	}
+	putchar('\n');
 //	stack_test();
 	return 0;
 }
