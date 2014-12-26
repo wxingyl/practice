@@ -4,8 +4,10 @@
 #include "datastructure/stack.h"
 #include "datastructure/queue.h"
 #include "algorithm/random.h"
+#include "datastructure/tree.h"
 
-void link_test()
+
+/*void link_test()
 {
 	int i;
 	Node* const head = link_create();
@@ -37,4 +39,29 @@ int main()
 	putchar('\n');
 //	stack_test();
 	return 0;
+}
+*/
+
+
+void main(void)
+{
+    TREE tr;
+    position np;
+    Element element;
+    tr = NULL;
+    tr = insert_value(tr, 18);
+    tr = insert_value(tr, 56);
+    tr = insert_value(tr, 23);
+    tr = insert_value(tr, 8);
+    tr = insert_value(tr, 2);
+    tr = insert_value(tr, 5);
+    printf("Orignal:\n");
+    print_sorted_tree(tr);
+    np = find_value(tr, 8);
+    if(np != NULL)
+    {
+        delete_node(np);
+        printf("After deletion:\n");
+        print_sorted_tree(tr);
+    }
 }
