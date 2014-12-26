@@ -2,10 +2,21 @@
 #include <stdlib.h>
 #include "tree.h"
 //print values of the tree in sorted order 在分类树的顺序打印值
+
+static int is_root(position np)
+{
+   return (np->parent == NULL);
+}
+
+static int is_leaf(position np)
+{
+    return (np->lchild == NULL && np->rchild == NULL);
+}
+
 void print_sorted_tree(TREE tr)
 {
     if(tr == NULL){
-        return NULL;
+        return;
     }
     print_sorted_tree(tr->lchild);
     printf("%d\n", tr->element);
@@ -96,16 +107,6 @@ Element delete_node(position np)
 }
 
 
-static int is_root(position np)
-{
-   return (np->parent == NULL);
-}
-
-
-static int is_leaf(position np)
-{
-    return (np->lchild == NULL && np->rchild == NULL);
-}
 
 static Element delete_leaf(position np)
 {
@@ -131,24 +132,26 @@ static void insert_node_to_nonempty_tree(TREE tr, position np)
 {
     if(np->element <= tr->element)
     {
-        if(tr->lchild == NULL){
+        if(tr->lchild == NULL)
+		{
             tr->lchild = np;
             np->parent = tr;
-            return 0;}
-         else{
+            return;
+		} else
+		{
             insert_node_to_nonempty_tree(tr->lchild, np);
-         }
+        }
 
     }
     else if(np->element > tr->element){
-        if(tr->rchild == NULL){
+        if(tr->rchild == NULL)
+		{
             tr->rchild = np;
             np->parent = tr;
-            return 0;
+            return;
         }
         else{
             insert_node_to_nonempty_tree(tr->rchild, np);
         }
-
     }
 }

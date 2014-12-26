@@ -1,18 +1,17 @@
 #ifndef _TREE
 #define _TREE
 
-typedef struct tr_node *position;
-typedef int Element;
-struct tr_node
+typedef struct tr_node
 {
-    Element element;
-    position parent;
-    position lchild;
-    position rchild;
-};
+	int value;
+	struct tr_node *left;
+	struct tr_node *right;
+} TreeNode;
 
-typedef struct tr_node *TREE;
-
+typedef struct {
+	TreeNode* root;
+	int size;
+} Tree;
 
 void print_sorted_tree(TREE);
 position find_min(TREE);
