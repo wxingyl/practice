@@ -6,8 +6,7 @@
 #include "algorithm/random.h"
 #include "datastructure/tree.h"
 
-
-/*void link_test()
+void link_test()
 {
 	int i;
 	Node* const head = link_create();
@@ -25,7 +24,7 @@ void stack_test()
 	printf("stack top->value: %d\n", top->value);
 }
 
-int main()
+void rand_test()
 {
 	int a[100];
 	init_rand(a, 100, 0, 10);
@@ -37,15 +36,11 @@ int main()
 			putchar('\n');
 	}
 	putchar('\n');
-//	stack_test();
-	return 0;
 }
-*/
 
-
-void main(void)
+void tree_test()
 {
-    TREE tr;
+	TREE tr;
     position np;
     Element element;
     tr = NULL;
@@ -65,3 +60,11 @@ void main(void)
         print_sorted_tree(tr);
     }
 }
+
+int main()
+{
+	rand_test();
+//	stack_test();
+	return 0;
+}
+
