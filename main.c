@@ -24,7 +24,7 @@ void stack_test()
 	printf("stack top->value: %d\n", top->value);
 }
 
-void rand_test()
+/*void rand_test()
 {
 	int a[100];
 	init_rand(a, 100, 0, 10);
@@ -37,12 +37,22 @@ void rand_test()
 	}
 	putchar('\n');
 }
+*/
+
+int main()
+{
+    void tree_test();
+//	rand_test();
+//	stack_test();
+    tree_test();
+	return 0;
+}
+
 
 void tree_test()
 {
-	TREE tr;
-    position np;
-    Element element;
+	Tree* tr;
+    Tr_Node* np;
     tr = NULL;
     tr = insert_value(tr, 18);
     tr = insert_value(tr, 56);
@@ -52,6 +62,7 @@ void tree_test()
     tr = insert_value(tr, 5);
     printf("Orignal:\n");
     print_sorted_tree(tr);
+
     np = find_value(tr, 8);
     if(np != NULL)
     {
@@ -60,11 +71,3 @@ void tree_test()
         print_sorted_tree(tr);
     }
 }
-
-int main()
-{
-	rand_test();
-//	stack_test();
-	return 0;
-}
-

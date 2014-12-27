@@ -1,29 +1,23 @@
-#ifndef _TREE
-#define _TREE
+#ifndef _TREE_H
+#define _TREE_H
 
-typedef struct tr_node *position;
-typedef int Element;
-struct tr_node
+typedef struct tr_node
 {
-    Element element;
-    position parent;
-    position lchild;
-    position rchild;
-};
+    int value;
+    struct tr_node *lchild;
+    struct tr_node *rchild;
+    struct tr_node *parent;
+}Tr_Node;
 
-typedef struct tr_node *TREE;
+typedef struct tree{
+    Tr_Node *root;
+    int size;
+}Tree;
 
-
-void print_sorted_tree(TREE);
-position find_min(TREE);
-position find_max(TREE);
-position find_value(TREE, Element);
-position insert_value(TREE, Element);
-Element delete_node(position);
-
-static Element is_root(position);
-static Element is_leaf(position);
-static Element delete_leaf(position);
-static void insert_node_to_nonempty_tree(TREE, position);
-
-#endif // _TREE
+Tr_Node* insert(Tree*, int);
+void display(Tree*);
+Tr_Node* find(Tree*, int);
+Tr_Node* find_min(Tree*);
+Tr_Node* find_max(Tree*);
+int delete(Tree*, int);
+#endif // _Tree

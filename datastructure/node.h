@@ -1,5 +1,5 @@
-#ifndef _NODE
-#define _NODE
+#ifndef _NODE_H
+#define _NODE_H
 
 typedef struct node
 {
