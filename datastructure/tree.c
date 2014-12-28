@@ -8,7 +8,7 @@ static int delete_leaf(Tr_Node* np)
     Tr_Node*parent;
     int element;
     element = np->value;
-    if(pD:\code\practice\datastructure\queue.harent->lchild == np)
+    if(parent->lchild == np)
     {
         parent->lchild = NULL;
     }
@@ -21,35 +21,7 @@ static int delete_leaf(Tr_Node* np)
 
 }
 
-static void insert_node_to_nonempty_tree(TREE tr, position np)
-{
-    if(np->element <= tr->element)
-    {
-        if(tr->lchild == NULL)
-		{
-            tr->lchild = np;
-            np->parent = tr;
-            return;
-		} else
-		{
-            insert_node_to_nonempty_tree(tr->lchild, np);
-        }
-    }
-    else if(np->element > tr->element){
-        if(tr->rchild == NULL)
-		{
-            tr->rchild = np;
-            np->parent = tr;
-            return;
-        }
-        else{
-            insert_node_to_nonempty_tree(tr->rchild, np);
-        }
-    }
-    return -1;
-}
-
-static void insert_node_to_nonempty_tree(Tree* tr, Tr_Node* np)
+static void insert_node_to_nonempty_tree(Tr_Node* tr, Tr_Node* np)
 {
     if(np->value <= tr->value)
     {
@@ -128,11 +100,11 @@ static Tr_Node* find_by_value(Tr_Node *node, int element)
     {
         return node;
     }
-    else if (node>value > element)
+    else if (node->value > element)
     {
-        return find_by_value(node->lchild);
+        return find_by_value(node->lchild, element);
     } else {
-        return find_by_value(node->rchild);
+        return find_by_value(node->rchild, element);
     }
 }
 
@@ -144,7 +116,6 @@ Tr_Node* find(Tree* tr, int element)
 
 Tr_Node* insert(Tree* tr, int value)
 {
-    tr->root
     Tr_Node* np;
     np = (Tr_Node*)malloc(sizeof(struct tr_node));
     np->value = value;
@@ -156,22 +127,7 @@ Tr_Node* insert(Tree* tr, int value)
     }
     else
     {
-        insert_node_to_nonempty_tree(tr, np);
+        insert_node_to_nonempty_tree(tr->root, np);
     }
     return tr;
-}
-
-int delete_node(Tree* tr, int value)
-{
-    position replace;
-    Element element;
-    if(is_leaf(np)){
-        return delete_leaf(np);
-    }
-    else{
-        replace = (np->lchild != NULL) ? find_max(np->lchild) : find_min(np->rchild);
-        element = np->element;
-        np->element = delete_node(replace);
-        return element;
-    }
 }

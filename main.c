@@ -4,6 +4,7 @@
 #include "datastructure/stack.h"
 #include "datastructure/queue.h"
 #include "algorithm/random.h"
+#include "algorithm/sort.h"
 #include "datastructure/tree.h"
 
 void link_test()
@@ -24,10 +25,10 @@ void stack_test()
 	printf("stack top->value: %d\n", top->value);
 }
 
-/*void rand_test()
+void rand_test()
 {
 	int a[100];
-	init_rand(a, 100, 0, 10);
+	init_rand(a, 100, 0, 100);
 	int i = 0;
 	for(; i < 100; i++)
 	{
@@ -37,37 +38,37 @@ void stack_test()
 	}
 	putchar('\n');
 }
-*/
 
+void tree_test()
+{
+	Tree* tr = NULL;
+    Tr_Node* np = insert(tr, 18);
+    printf("Orignal:\n");
+    display(tr);
+}
+
+void test_sort()
+{
+	int a[100];
+	init_rand(a, 100, 0, 100);
+	simple_sort(a, 100);
+	int i = 0;
+	for(; i < 100; i++)
+	{
+		printf("\t%d", a[i]);
+		if((i+1) % 10 == 0)
+			putchar('\n');
+	}
+	putchar('\n');
+}
 int main()
 {
-    void tree_test();
 //	rand_test();
 //	stack_test();
-    tree_test();
+//    tree_test();
+    test_sort();
 	return 0;
 }
 
 
-void tree_test()
-{
-	Tree* tr;
-    Tr_Node* np;
-    tr = NULL;
-    tr = insert_value(tr, 18);
-    tr = insert_value(tr, 56);
-    tr = insert_value(tr, 23);
-    tr = insert_value(tr, 8);
-    tr = insert_value(tr, 2);
-    tr = insert_value(tr, 5);
-    printf("Orignal:\n");
-    print_sorted_tree(tr);
 
-    np = find_value(tr, 8);
-    if(np != NULL)
-    {
-        delete_node(np);
-        printf("After deletion:\n");
-        print_sorted_tree(tr);
-    }
-}
