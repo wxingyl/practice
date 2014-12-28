@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "tree.h"
 
+
 static int delete_leaf(Tr_Node* np)
 {
     Tr_Node*parent;
@@ -18,6 +19,34 @@ static int delete_leaf(Tr_Node* np)
     free(np);
     return element;
 
+}
+
+static void insert_node_to_nonempty_tree(TREE tr, position np)
+{
+    if(np->element <= tr->element)
+    {
+        if(tr->lchild == NULL)
+		{
+            tr->lchild = np;
+            np->parent = tr;
+            return;
+		} else
+		{
+            insert_node_to_nonempty_tree(tr->lchild, np);
+        }
+    }
+    else if(np->element > tr->element){
+        if(tr->rchild == NULL)
+		{
+            tr->rchild = np;
+            np->parent = tr;
+            return;
+        }
+        else{
+            insert_node_to_nonempty_tree(tr->rchild, np);
+        }
+    }
+    return -1;
 }
 
 static void insert_node_to_nonempty_tree(Tree* tr, Tr_Node* np)
@@ -132,22 +161,17 @@ Tr_Node* insert(Tree* tr, int value)
     return tr;
 }
 
-
 int delete_node(Tree* tr, int value)
 {
-    Tr_Node* node = find(tr, value);
-    if (node != null) {
-        Tr_Node* parent = node->parent;
-        node->lchild->parent = node->rchild;
-        node->rchild->lchild = node->lchild;
-        node->rchild->parent = parent;
-        if (parent->lchild == node) {
-            parent->lchild = node->rchild;
-        } else {
-            parent->rchild = node->rchild;
-        }
-        free(node);
-        return value;
+    position replace;
+    Element element;
+    if(is_leaf(np)){
+        return delete_leaf(np);
     }
-    return -1;
+    else{
+        replace = (np->lchild != NULL) ? find_max(np->lchild) : find_min(np->rchild);
+        element = np->element;
+        np->element = delete_node(replace);
+        return element;
+    }
 }
