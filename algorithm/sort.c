@@ -2,6 +2,16 @@
 #include<stdlib.h>
 #include "sort.h"
 
+//交换函数
+static void swap(int*a,int*b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+//冒泡排序
 void simple_sort(int data[], int size)
 {
     int i, j;
@@ -11,39 +21,43 @@ void simple_sort(int data[], int size)
         {
             if (data[i] > data[j])
             {
-                int tmp = data[i];
-                data[i] = data[j];
-                data[j] = tmp;
+                swap(data[i], data[j]);
             }
         }
     }
 }
 
-static void swap(int*a,int*b)
-{
-    int temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
-}
 
-void select_sort(int data[],int n)
+//选择排序
+void select_sort(int data[], int size)
 {
-    register int i,j,min;
-    for(i=0; i<n-1; i++)
+    int i, j, min;
+    for(i = 0; i < size - 1; i++)
     {
-        min=i;//查找最小值
-        for(j=i+1; j<n; j++)
-        {
-            if(data[min]>data[j])
-            {
-                min=j;
+        min = i;
+        for(j = i + 1; j < size; j++){
+            if(data[min] > data[j]){
+                min = j;
             }
         }
-        if(min!=i)
-        {
-            swap(&data[min],&data[i]);
-            printf("第%d趟排序结果为:\n",i+1);
+        if(min != i){
+                swap(&data[min], &data[i]);
         }
     }
 }
+
+//插入排序
+void insert_sort(int data[], int size)
+{
+    int i, j;
+    for(i = 1; i < size; i++)
+    {
+        while((j = (i - 1)) >= 0) && (data[j] > data[i]))
+        {
+            swap(data[j], data[i]);
+            j--;
+        }
+    }
+}
+
+
