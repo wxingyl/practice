@@ -3,7 +3,7 @@
 #include "sort.h"
 
 //½»»»º¯Êı
-static void swap(int*a,int*b)
+static void swap(int* a, int* b)
 {
     int temp;
     temp = *a;
@@ -21,7 +21,7 @@ void simple_sort(int data[], int size)
         {
             if (data[i] > data[j])
             {
-                swap(data[i], data[j]);
+                swap(&data[i], &data[j]);
             }
         }
     }
@@ -41,7 +41,7 @@ void select_sort(int data[], int size)
             }
         }
         if(min != i){
-                swap(&data[min], &data[i]);
+			swap(&data[min], &data[i]);
         }
     }
 }
@@ -52,12 +52,12 @@ void insert_sort(int data[], int size)
     int i, j;
     for(i = 1; i < size; i++)
     {
-        while((j = (i - 1)) >= 0) && (data[j] > data[i]))
+		j = i;
+        while( j > 0 && data[j] < data[j-1])
         {
-            swap(data[j], data[i]);
+            swap(&data[j], &data[j-1]);
             j--;
         }
     }
 }
-
 

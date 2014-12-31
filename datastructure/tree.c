@@ -53,7 +53,7 @@ static void insert_node_to_nonempty_tree(Tr_Node* tr, Tr_Node* np)
 //print values of the tree in sorted order 在分类树的顺序打印值
 static void display_all(Tr_Node* np)
 {
-    if (np == NULL) return NULL;
+    if (np == NULL) return;
     display_all(np->lchild);
     printf("%d\n", np->value);
     display_all(np->rchild);
@@ -123,11 +123,11 @@ Tr_Node* insert(Tree* tr, int value)
     np->rchild = NULL;
     if(tr == NULL)
     {
-        tr = np;
+        tr->root = np;
     }
     else
     {
         insert_node_to_nonempty_tree(tr->root, np);
     }
-    return tr;
+    return tr->root;
 }
