@@ -61,3 +61,15 @@ void insert_sort(int data[], int size)
     }
 }
 
+static void _quick_sort(int a[], int left, int right) {
+	if (left >= right) return;
+	int i = left, j = right, key = a[left]; 
+	while(i < j){
+			
+	}
+}
+
+void quick_sort(int data[], int size)
+{
+	_quick_sort(data, 0, size-1);
+}
