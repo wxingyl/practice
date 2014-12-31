@@ -51,7 +51,7 @@ void test_sort()
 {
 	int a[100];
 	init_rand(a, 100, 0, 100);
-//	insert_sort(a, 100);
+	quick_sort(a, 100);
 	int i = 0;
 	for(; i < 100; i++)
 	{
@@ -67,6 +67,7 @@ int main()
 //	stack_test();
 //    tree_test();
     test_sort();
+
 	return 0;
 }
 

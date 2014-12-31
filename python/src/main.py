@@ -97,3 +97,6 @@ summmer = Chicken()
 print summer.have_feather
 print summer.move(5, 8)
 
+
+class human():
+	laugh = 
