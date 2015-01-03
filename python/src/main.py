@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-  
-# 用空格的缩进来表示隶属关系
-from src.brid import Chicken, Bird
-
+from brid import Chicken, Bird
 
 def square_sum(a, b):
     c = a ** 2 + b ** 2
@@ -11,7 +9,6 @@ def square_sum(a, b):
 def change_int(x):
     x += 1
     return x
-
 
 def change_list(data):
     data[1] = 3
