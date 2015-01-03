@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-  
 from brid import Chicken, Bird
 
+
 def square_sum(a, b):
     c = a ** 2 + b ** 2
     return a, b, c
@@ -9,6 +10,7 @@ def square_sum(a, b):
 def change_int(x):
     x += 1
     return x
+
 
 def change_list(data):
     data[1] = 3
