@@ -5,3 +5,5 @@ practice.depend
 *.o
 test
 tags
+.idea
+python/.idea
