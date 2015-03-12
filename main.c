@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "datastructure/linked_list.h"
 #include "datastructure/stack.h"
 #include "datastructure/queue.h"
 #include "algorithm/random.h"
+#include "algorithm/dynamic.h"
 #include "algorithm/sort.h"
 #include "datastructure/tree.h"
 
@@ -61,13 +63,22 @@ void test_sort()
 	}
 	putchar('\n');
 }
-int main()
+
+void test_dynamic(const char* str1, const char* str2)
+{
+	printf("str1: %s\nstr2: %s\n", str1, str2);
+	char* ret = lcs(str1, strlen(str1), str2, strlen(str2));
+	printf("result: %s\n", ret);
+	free(ret);
+}
+
+int main(int argc, char* argv[])
 {
 //	rand_test();
 //	stack_test();
 //    tree_test();
-    test_sort();
-
+//    test_sort();
+	test_dynamic(argv[1], argv[2]);
 	return 0;
 }
 
