@@ -8,6 +8,7 @@
 #include "algorithm/dynamic.h"
 #include "algorithm/sort.h"
 #include "datastructure/tree.h"
+#include "unix/unix.h"
 
 void link_test()
 {
@@ -72,13 +73,20 @@ void test_dynamic(const char* str1, const char* str2)
 	free(ret);
 }
 
+void test_unix()
+{
+	file_test();
+}
+
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
 //	stack_test();
 //    tree_test();
 //    test_sort();
-	test_dynamic(argv[1], argv[2]);
+//	test_dynamic(argv[1], argv[2]);
+	test_unix();
 	return 0;
 }
 
