@@ -3,7 +3,6 @@ obj/
 practice.cbp
 practice.depend
 *.o
-test
 tags
 .idea
 python/.idea
