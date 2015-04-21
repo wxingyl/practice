@@ -38,3 +38,18 @@ int trailingZeroes(int n) {
 	ret += trailingZeroes(n / 5);
 	return ret;
 }
+
+int rangeBitwiseAnd(int m, int n) {
+	int len1 = 0;
+	long i = 1;
+	for (; i <= m; i <<= 1, len1++);
+	int len2 = len1;
+	for (; i <= n; i <<= 1, len2++);
+	printf("%d: %d, %d: %d\n", m, len1, n, len2);
+	if (len2 != len1) return 0;
+	int dic = n - m;
+	i = 1;
+	int j = 2147483647;
+	for (; i <= dic; i <<= 1, j &= (j << 1));
+	return m & j;
+}

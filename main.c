@@ -86,9 +86,9 @@ int main(int argc, char* argv[])
 //    test_sort();
 //	test_dynamic(argv[1], argv[2]);
 //	test_unix();
-	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
+//	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
+	printf("[%s, %s]: %d\n", argv[1], argv[2], rangeBitwiseAnd(atoi(argv[1]), atoi(argv[2])));
 	return 0;
 }
-
 
 
