@@ -1,4 +1,4 @@
-object = main.o stack.o link.o queue.o random.o tree.o sort.o dynamic.o unix_test.o
+object = main.o stack.o link.o queue.o tool.o tree.o sort.o dynamic.o unix_test.o
 test : $(object)
 	gcc -o test $(object) 
 stack.o : datastructure/stack.c datastructure/stack.h datastructure/node.h
@@ -9,8 +9,8 @@ queue.o : datastructure/queue.c datastructure/queue.h datastructure/node.h
 	gcc -c datastructure/queue.c
 tree.o : datastructure/tree.c datastructure/tree.h
 	gcc -c datastructure/tree.c
-random.o : algorithm/random.c algorithm/random.h
-	gcc -c algorithm/random.c 
+tool.o : algorithm/tool.c algorithm/tool.h
+	gcc -c algorithm/tool.c 
 sort.o : algorithm/sort.c algorithm/sort.h
 	gcc -c algorithm/sort.c 
 dynamic.o : algorithm/dynamic.c algorithm/dynamic.h

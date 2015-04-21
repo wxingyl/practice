@@ -4,7 +4,7 @@
 #include "datastructure/linked_list.h"
 #include "datastructure/stack.h"
 #include "datastructure/queue.h"
-#include "algorithm/random.h"
+#include "algorithm/tool.h"
 #include "algorithm/dynamic.h"
 #include "algorithm/sort.h"
 #include "datastructure/tree.h"
@@ -86,7 +86,8 @@ int main(int argc, char* argv[])
 //    tree_test();
 //    test_sort();
 //	test_dynamic(argv[1], argv[2]);
-	test_unix();
+//	test_unix();
+	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
 	return 0;
 }
 
