@@ -77,6 +77,27 @@ void test_unix()
 	file_test();
 }
 
+void test_rotate(char* argv[])
+{
+	int n = atoi(argv[1]), k = atoi(argv[2]);
+	int* p = (int* )malloc(sizeof(int) * n);
+	init_rand(p, n, 0, 1000);
+	printf("n = %d, k = %d :\n", n, k);
+	int i;
+	for (i = 0; i < n; i++) {
+		if (i % 5 == 0) putchar('\n'); 
+		printf("\t%d", p[i]);
+	} 
+	putchar('\n');
+	rotate(p, n, k);
+	printf("after rotate:\n");
+	for (i = 0; i < n; i++) {
+		if (i % 5 == 0) putchar('\n'); 
+		printf("\t%d", p[i]);
+	}
+	putchar('\n');
+	free(p);
+}
 
 int main(int argc, char* argv[])
 {
@@ -87,7 +108,8 @@ int main(int argc, char* argv[])
 //	test_dynamic(argv[1], argv[2]);
 //	test_unix();
 //	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
-	printf("[%s, %s]: %d\n", argv[1], argv[2], rangeBitwiseAnd(atoi(argv[1]), atoi(argv[2])));
+//	printf("[%s, %s]: %d\n", argv[1], argv[2], rangeBitwiseAnd(atoi(argv[1]), atoi(argv[2])));
+	test_rotate(argv);
 	return 0;
 }
 

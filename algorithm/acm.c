@@ -53,3 +53,20 @@ int rangeBitwiseAnd(int m, int n) {
 	}
 	return ret;
 }
+
+void rotate(int nums[], int n, int k) {
+	if (!n) return;
+	int i = 0, next_val = nums[0];
+	int shift = 0, c = 0, j;
+	while(c++ < n) {
+		j = (i+k) % n;
+		int tmp = nums[j];
+		nums[j] = next_val;
+		next_val = tmp;
+		i = j;
+		if (i == shift) {
+			i = ++shift;
+			next_val = nums[i];
+		}
+	}
+}
