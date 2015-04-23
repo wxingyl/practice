@@ -35,5 +35,12 @@ void rotate(int nums[], int n, int k);
  *
  * Example: 19 is a happy number
  */
-bool isHappy(int n); 
+bool isHappy(int n);
+/**
+ * https://leetcode.com/problems/single-number/
+ * Given an array of integers, every element appears twice except for one. Find that single one.
+ * Note:
+ * Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+ */
+int singleNumber(int* nums, int numsSize);
 #endif

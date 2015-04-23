@@ -90,7 +90,6 @@ bool _isHappy(int n, Node* head) {
 		return _isHappy(newN, head);
 	}
 }
-	
 
 bool isHappy(int n) {
 	Node* head = link_create();		    
@@ -98,4 +97,8 @@ bool isHappy(int n) {
 	printf("ret: %d\n", ret);
 	link_destory(head);
 	return ret;
+}
+
+int singleNumber(int* nums, int numsSize) {
+	return 0;
 }
