@@ -109,7 +109,8 @@ int main(int argc, char* argv[])
 //	test_unix();
 //	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
 //	printf("[%s, %s]: %d\n", argv[1], argv[2], rangeBitwiseAnd(atoi(argv[1]), atoi(argv[2])));
-	test_rotate(argv);
+//	test_rotate(argv);
+	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
 	return 0;
 }
 

@@ -1,5 +1,7 @@
 #include "acm.h" 
+#include "../datastructure/linked_list.h" 
 #include <time.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -69,4 +71,31 @@ void rotate(int nums[], int n, int k) {
 			next_val = nums[i];
 		}
 	}
+}
+
+bool _isHappy(int n, Node* head) {
+	printf("n: %d\n", n);
+	char str[16];
+	sprintf(str, "%d", n);
+	int length = strlen(str);
+	int i, newN = 0;
+	for (i = 0; i < length; i++)
+		newN += (str[i] - '0') * (str[i] - '0');
+	if (newN == 1)
+		return true;
+	else if (link_contain(head, newN))
+		return false;
+	else {
+		link_push(head, newN);
+		return _isHappy(newN, head);
+	}
+}
+	
+
+bool isHappy(int n) {
+	Node* head = link_create();		    
+	bool ret = _isHappy(n, head);
+	printf("ret: %d\n", ret);
+	link_destory(head);
+	return ret;
 }

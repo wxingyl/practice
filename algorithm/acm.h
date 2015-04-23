@@ -1,6 +1,8 @@
 #ifndef _ACM_H
 #define _ACM_H
 
+#include <stdbool.h>
+
 //最长公共子序列
 char* lcs(const char* str1, const int len1, const char* str2, const int len2);
 //生成指定数目，范围的随机数，值取值为[min, max)
@@ -25,4 +27,13 @@ int rangeBitwiseAnd(int m, int n);
  * Note: Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
  */
 void rotate(int nums[], int n, int k);
+/**
+ * https://leetcode.com/problems/happy-number/
+ * Write an algorithm to determine if a number is "happy".
+ *
+ * A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
+ *
+ * Example: 19 is a happy number
+ */
+bool isHappy(int n); 
 #endif

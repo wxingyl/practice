@@ -72,3 +72,14 @@ void link_print(Node *head)
 		printf("index: %d, value: %d\n", i++, head->value);
 	}
 }
+
+bool link_contain(Node* head, int value)
+{
+	Node *p = head->next;
+	while(p != NULL) {
+		if (p->value == value)
+			return 1;
+		p = p->next;
+	}
+	return 0;
+}
