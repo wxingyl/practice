@@ -99,6 +99,21 @@ void test_rotate(char* argv[])
 	free(p);
 }
 
+void testSingleNumber(int argc, char* argv[]) {
+	argc--;
+	int* p = (int*) malloc(sizeof(int) * argc);
+	int i;
+	for (i = 0; i < argc; i++)
+		p[i] = atoi(argv[i+1]);
+	for (i = 0; i < argc; i++) {
+		printf("%d\t", p[i]);
+	}
+	putchar('\n');
+	int ret = singleNumberll(p, argc);
+	printf("singleNumber: %d\n", ret);
+	free(p);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -110,7 +125,8 @@ int main(int argc, char* argv[])
 //	printf("%s: %d\n", argv[1], trailingZeroes(atoi(argv[1])));
 //	printf("[%s, %s]: %d\n", argv[1], argv[2], rangeBitwiseAnd(atoi(argv[1]), atoi(argv[2])));
 //	test_rotate(argv);
-	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
+//	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
+	testSingleNumber(argc, argv);
 	return 0;
 }
 

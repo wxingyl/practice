@@ -57,7 +57,8 @@ int rangeBitwiseAnd(int m, int n) {
 }
 
 void rotate(int nums[], int n, int k) {
-	if (!n) return;
+	k = k % n;
+	if (!(n && k)) return;
 	int i = 0, next_val = nums[0];
 	int shift = 0, c = 0, j;
 	while(c++ < n) {
@@ -100,5 +101,21 @@ bool isHappy(int n) {
 }
 
 int singleNumber(int* nums, int numsSize) {
-	return 0;
+	int i, ret = 0;
+	for (i = 0; i < numsSize; i++)
+		ret ^= nums[i];
+	return ret;
+}
+
+int singleNumberll(int* nums, int numsSize) {
+	int count[32] = {0};
+	int ret = 0, i, j;
+	for (i = 0; i < 32; i++) {
+		for (j = 0; j < numsSize; j++) {
+			if (nums[j] & (1 << i))
+				count[i]++;
+		}
+		ret |= (count[i] % 3) << i;
+	}
+	return ret;
 }
