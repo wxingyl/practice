@@ -108,14 +108,17 @@ int singleNumber(int* nums, int numsSize) {
 }
 
 int singleNumberll(int* nums, int numsSize) {
-	int count[32] = {0};
-	int ret = 0, i, j;
-	for (i = 0; i < 32; i++) {
-		for (j = 0; j < numsSize; j++) {
-			if (nums[j] & (1 << i))
-				count[i]++;
-		}
-		ret |= (count[i] % 3) << i;
+	int ones = 0, twos = 0, threes = 0;
+	int i;
+	for (i = 0; i < numsSize; i++) {
+		//升级到twos中的位
+		int tmp = nums[i] & ones;
+		twos |= tmp; 
+		//一次的进来，同时把出现2次的干掉
+		ones ^= nums[i];
+		threes = ones & twos;
+		ones &= ~threes;
+		twos &= ~threes;
 	}
-	return ret;
+	return ones;
 }
