@@ -122,3 +122,7 @@ int singleNumberll(int* nums, int numsSize) {
 	}
 	return ones;
 }
+int longestConsecutive(int* nums, int numsSize) {
+	
+	return 0;	    
+}
