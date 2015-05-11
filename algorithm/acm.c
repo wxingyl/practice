@@ -1,5 +1,5 @@
-#include "acm.h" 
-#include "../datastructure/linked_list.h" 
+#include "acm.h"
+#include "../datastructure/linked_list.h"
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
@@ -9,13 +9,13 @@ char* lcs(const char* str1, const int len1, const char* str2, const int len2)
 {
 	int arr[len1+1][len2+1];
 	int i, j;
-	for (i = 0; i < len1+1; i++) 
+	for (i = 0; i < len1+1; i++)
 		arr[i][0] = 0;
-	for (i = 0; i < len2+1; i++) 
+	for (i = 0; i < len2+1; i++)
 		arr[0][j] = 0;
 	for(i = 1; i < len1+1; i++)
 		for(j = 1; j < len2+1; j++)
-			if (str1[i] == str2[j]) 
+			if (str1[i] == str2[j])
 				arr[i][j] = arr[i-1][j-1] + 1;
 			else if (arr[i-1][j] > arr[i][j-1])
 				arr[i][j] = arr[i-1][j];
@@ -93,7 +93,7 @@ bool _isHappy(int n, Node* head) {
 }
 
 bool isHappy(int n) {
-	Node* head = link_create();		    
+	Node* head = link_create();
 	bool ret = _isHappy(n, head);
 	printf("ret: %d\n", ret);
 	link_destory(head);
@@ -113,7 +113,7 @@ int singleNumberll(int* nums, int numsSize) {
 	for (i = 0; i < numsSize; i++) {
 		//升级到twos中的位
 		int tmp = nums[i] & ones;
-		twos |= tmp; 
+		twos |= tmp;
 		//一次的进来，同时把出现2次的干掉
 		ones ^= nums[i];
 		threes = ones & twos;
@@ -123,6 +123,6 @@ int singleNumberll(int* nums, int numsSize) {
 	return ones;
 }
 int longestConsecutive(int* nums, int numsSize) {
-	
-	return 0;	    
+	//通过java实现了
+	return 0;
 }
