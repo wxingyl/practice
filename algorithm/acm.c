@@ -126,3 +126,20 @@ int longestConsecutive(int* nums, int numsSize) {
 	//通过java实现了
 	return 0;
 }
+
+int minSubArrayLen(int s, int* nums, int numsSize) {
+	int i = 0, j = 0, ret = numsSize+1, sum = 0;
+	while(j < numsSize) {
+		while(j < numsSize && sum < s) {
+			sum += nums[j];
+			j++;
+		}
+		while(i < j && sum >= s) {
+			sum -= nums[i];
+			i++;
+		}
+		int len = j - i + 1;
+		ret = ret < len ? ret : len;
+	}
+	return ret > numsSize ? 0 : ret;
+}
