@@ -122,6 +122,20 @@ void testMinSubArrayLen(int argc, char* argv[]) {
 		a[i] = atoi(argv[i+2]);
 	}
 	printf("%d\n", minSubArrayLen(atoi(argv[1]), a, size));
+	free(a);
+}
+
+void testTwoSum(int argc, char* argv[]) {
+	const int size = argc - 2;
+	int* a = (int*) malloc(sizeof(int) * size);
+	int i;
+	for (i = 0; i < size; i++) {
+		a[i] = atoi(argv[i+2]);
+	}
+	int* ret = twoSum(a, size, atoi(argv[1]));
+	printf("index1: %d, index2: %d\n", ret[0], ret[1]); 
+	free(ret);
+	free(a);
 }
 
 int main(int argc, char* argv[])
@@ -137,6 +151,6 @@ int main(int argc, char* argv[])
 //	test_rotate(argv);
 //	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
 //	testSingleNumber(argc, argv);
-	testMinSubArrayLen(argc, argv);
+	testTwoSum(argc, argv);
 	return 0;
 }

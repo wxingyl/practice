@@ -143,3 +143,27 @@ int minSubArrayLen(int s, int* nums, int numsSize) {
 	}
 	return ret > numsSize ? 0 : ret;
 }
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ * 没意思, map解决, 或者排序后得到
+ **/
+int* twoSum(int* nums, int numsSize, int target) {
+	int i = 0, j = numsSize-1;
+	bool cont = true;
+	for (; i < numsSize-1; i++) {
+		int t = target - nums[i];
+		for (j = i+1; j < numsSize; j++) {
+			if (t == nums[j]) {
+				cont = false;
+				break;
+			}
+		}
+		if (!cont)
+			break;
+	}
+	int* ret = (int*) malloc(2 * sizeof(int));
+	ret[0] = i+1;
+	ret[1] = j+1;
+	return ret;
+}
