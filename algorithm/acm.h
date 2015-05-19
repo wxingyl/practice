@@ -83,4 +83,22 @@ int minSubArrayLen(int s, int* nums, int numsSize);
  * Output: index1=1, index2=2
  */
 int* twoSum(int* nums, int numsSize, int target);
+
+struct ListNode {
+	int val;
+	struct ListNode *next;
+};
+
+void free_list_node(struct ListNode* l);
+
+void print_list_node(struct ListNode* l);
+
+/**
+ *	https://leetcode.com/problems/add-two-numbers/
+ *	You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+ *
+ *	Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+ *	Output: 7 -> 0 -> 8
+ */
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2);
 #endif

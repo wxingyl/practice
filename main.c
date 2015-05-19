@@ -126,16 +126,32 @@ void testMinSubArrayLen(int argc, char* argv[]) {
 }
 
 void testTwoSum(int argc, char* argv[]) {
-	const int size = argc - 2;
-	int* a = (int*) malloc(sizeof(int) * size);
-	int i;
-	for (i = 0; i < size; i++) {
-		a[i] = atoi(argv[i+2]);
+	int index = atoi(argv[1])+1, i;
+	struct ListNode *p1 = NULL, *p2 = NULL, *p;
+	for (i = 2; i < argc; i++) {
+		if (i <= index && p1 == NULL) {
+			p1 = (struct ListNode*) malloc(sizeof(struct ListNode)); 
+			p = p1;
+		} else if (i > index && p2 == NULL) {
+			p2 = (struct ListNode*) malloc(sizeof(struct ListNode));
+			p = p2;
+		} else {
+			p->next = (struct ListNode*) malloc(sizeof(struct ListNode));
+			p = p->next;
+		}
+		p->next = NULL;
+		p->val = atoi(argv[i]);
 	}
-	int* ret = twoSum(a, size, atoi(argv[1]));
-	printf("index1: %d, index2: %d\n", ret[0], ret[1]); 
-	free(ret);
-	free(a);
+	printf("p1: ");
+	print_list_node(p1);
+	printf("p2: ");
+	print_list_node(p2);
+	struct ListNode* ret = addTwoNumbers(p1, p2);
+	printf("ret: ");
+	print_list_node(ret);
+	free_list_node(p1);
+	free_list_node(p2);
+	free_list_node(ret);
 }
 
 int main(int argc, char* argv[])

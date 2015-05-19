@@ -167,3 +167,52 @@ int* twoSum(int* nums, int numsSize, int target) {
 	ret[1] = j+1;
 	return ret;
 }
+
+void print_list_node(struct ListNode* l) {
+	struct ListNode* p = l;
+	while(p != NULL) {
+		printf("%d->", p->val);
+		p = p->next;
+	}
+	putchar('\n');
+}
+
+void free_list_node(struct ListNode* l) {
+	struct ListNode* p = l;
+	while(l != NULL) {
+		p = l->next;
+		free(l);
+		l = p;
+	}
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+	struct ListNode *p1 = l1, *p2 = l2;
+	int next_add = 0, sum, val1, val2;
+	struct ListNode *ret = NULL, *p;
+	while(p1 != NULL || p2 != NULL || next_add) {
+		if (ret == NULL) {
+			ret = (struct ListNode*) malloc(sizeof(struct ListNode));
+			p = ret;
+		} else {
+			p->next = (struct ListNode*) malloc(sizeof(struct ListNode));
+			p = p->next;
+		}
+		p->next = NULL;
+		if (p1 == NULL) val1 = 0;
+		else {
+			val1 = p1->val;
+			p1 = p1->next;
+		}
+		if (p2 == NULL) val2 = 0;
+		else {
+			val2 = p2->val;
+			p2 = p2->next;
+		}
+		sum = val1 + val2 + next_add;
+		next_add = 0;
+		p->val = sum % 10;
+		if (sum >= 10) next_add++;
+	}
+	return ret;
+}
