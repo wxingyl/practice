@@ -216,3 +216,24 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 	}
 	return ret;
 }
+
+int lengthOfLongestSubstring(char* s) {
+	int i = 0, j = 1, t, tmp, ret = 1;
+	int len = strlen(s);
+	if (!len) return 0;
+	while(j < len) {
+		char ch = s[j];
+		for(t = i; t < j;t++) {
+			if (s[t] == ch) break;
+		}
+		if (t != j) {
+			tmp = j - i;
+			ret = ret < tmp ? tmp : ret;
+			i = t+1;
+		}
+		j++;
+	}
+	tmp = j - i;
+	ret = ret < tmp ? tmp : ret;
+	return ret;    
+}

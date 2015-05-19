@@ -101,4 +101,9 @@ void print_list_node(struct ListNode* l);
  *	Output: 7 -> 0 -> 8
  */
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2);
+/**
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ * Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. For "bbbbb" the longest substring is "b", with the length of 1.
+ */
+int lengthOfLongestSubstring(char* s);
 #endif

@@ -153,6 +153,10 @@ void testTwoSum(int argc, char* argv[]) {
 	free_list_node(p2);
 	free_list_node(ret);
 }
+void testLengthOfLongestSubstring(char* argv) {
+	int len = lengthOfLongestSubstring(argv);
+	printf("%s: %d\n", argv, len);
+}
 
 int main(int argc, char* argv[])
 {
@@ -167,6 +171,7 @@ int main(int argc, char* argv[])
 //	test_rotate(argv);
 //	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
 //	testSingleNumber(argc, argv);
-	testTwoSum(argc, argv);
+//	testTwoSum(argc, argv);
+	testLengthOfLongestSubstring(argv[1]);
 	return 0;
 }
