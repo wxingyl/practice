@@ -106,4 +106,9 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2);
  * Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. For "bbbbb" the longest substring is "b", with the length of 1.
  */
 int lengthOfLongestSubstring(char* s);
+/**
+ * https://leetcode.com/problems/median-of-two-sorted-arrays/
+ * There are two sorted arrays nums1 and nums2 of size m and n respectively. Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+ */
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size);
 #endif

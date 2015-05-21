@@ -41,6 +41,10 @@ int trailingZeroes(int n) {
 	return ret;
 }
 
+/**
+ * 先统计m, n二进制位数，不同，结果肯定为0
+ * 相同那就一个一个的求出来，复杂度也不会太高
+ */
 int rangeBitwiseAnd(int m, int n) {
 	int len1 = 0;
 	long i = 1;
@@ -236,4 +240,29 @@ int lengthOfLongestSubstring(char* s) {
 	tmp = j - i;
 	ret = ret < tmp ? tmp : ret;
 	return ret;    
+}
+
+int min(int a, int b) {
+	return a < b ? a : b;
+}
+
+int findKth(int* a, int m, int* b, int n, int k) {
+	if (m > n) return findKth(b, n, a, m, k);	
+	if (m == 0) return b[k-1];
+	if (k <= 1) return min(a[0], b[0]);
+	int i = min(k / 2, m);
+	int j = k - i;
+	if (a[i-1] < b[j-1]) 
+		return findKth(a + i, m - i, b, n, k - i);
+	else if (a[i-1] > b[j-1])
+		return findKth(a, m, b + j, n - j, k - j);
+	else return a[i-1];
+}
+
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
+	int n = nums1Size + nums2Size;
+	if (n & 1)
+		return findKth(nums1, nums1Size, nums2, nums2Size, n / 2 + 1);
+	else
+		return (findKth(nums1, nums1Size, nums2, nums2Size, n / 2) + findKth(nums1, nums1Size, nums2, nums2Size, n / 2 + 1)) / 2.0;
 }

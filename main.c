@@ -158,6 +158,20 @@ void testLengthOfLongestSubstring(char* argv) {
 	printf("%s: %d\n", argv, len);
 }
 
+void testFindMedianSortedArrays(char* argv[]) {
+	int len1 = atoi(argv[1]), len2 = atoi(argv[2]);
+	int* nums1 = (int*) malloc(sizeof(int) * len1);
+	int* nums2 = (int*) malloc(sizeof(int) * len2);
+	int i;
+	for (i = 0; i < len1; i++)
+		nums1[i] = atoi(argv[i+3]);
+	for (i = 0; i < len2; i++)
+		nums2[i] = atoi(argv[i+3+len1]); 
+	printf("MedianSortedArrays: %f\n", findMedianSortedArrays(nums1, len1, nums2, len2));
+	free(nums1);
+	free(nums2);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -172,6 +186,7 @@ int main(int argc, char* argv[])
 //	printf("%s, %d\n", argv[1], isHappy(atoi(argv[1])));
 //	testSingleNumber(argc, argv);
 //	testTwoSum(argc, argv);
-	testLengthOfLongestSubstring(argv[1]);
+//	testLengthOfLongestSubstring(argv[1]);
+	testFindMedianSortedArrays(argv);
 	return 0;
 }
