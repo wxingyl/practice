@@ -266,3 +266,35 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
 	else
 		return (findKth(nums1, nums1Size, nums2, nums2Size, n / 2) + findKth(nums1, nums1Size, nums2, nums2Size, n / 2 + 1)) / 2.0;
 }
+
+char* longestPalindrome(char* s) {
+    int len = strlen(s), i, j;
+	if (len == 0 || len == 1) return s;
+	bool** f = (bool**) malloc(sizeof(bool*) * len);
+	for (i = 0; i < len; i++) {
+		f[i] = (bool*) malloc(sizeof(bool) * len);
+		f[i][i] = true;
+	}
+	for (i = 0; i < len-1; i++)
+		f[i+1][i] = true;
+	int m = 0, l = 0;
+	for(j = 1; j < len; j++)
+		for(i = j-1; i >= 0; i--) {
+			if(s[i] == s[j]) {
+				f[i][j] = f[i+1][j-1];
+				if (f[i][j] && l < (j-i+1)) {
+					l = j-i+1;
+					m = i;
+				}
+			}
+			else
+				f[i][j] = false;
+		}
+	char* ret = (char*) malloc(sizeof(char) * l);
+	for (i = 0; i < l; i++)
+		ret[i] = s[m+i];
+	for (i = 0; i < len; i++)
+		free(f[i]);
+	free(f);
+	return ret;
+}

@@ -127,7 +127,7 @@ void testMinSubArrayLen(int argc, char* argv[]) {
 
 void testTwoSum(int argc, char* argv[]) {
 	int index = atoi(argv[1])+1, i;
-	struct ListNode *p1 = NULL, *p2 = NULL, *p;
+	struct ListNode *p1 = NULL, *p2 = NULL, *p = NULL;
 	for (i = 2; i < argc; i++) {
 		if (i <= index && p1 == NULL) {
 			p1 = (struct ListNode*) malloc(sizeof(struct ListNode)); 
@@ -172,6 +172,13 @@ void testFindMedianSortedArrays(char* argv[]) {
 	free(nums2);
 }
 
+void testLongestPalindrome(char* s) {
+	char* pa = longestPalindrome(s);
+	printf("LongestPalindrome: %s\n", pa);
+	if (s != pa)
+		free(pa);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -187,6 +194,7 @@ int main(int argc, char* argv[])
 //	testSingleNumber(argc, argv);
 //	testTwoSum(argc, argv);
 //	testLengthOfLongestSubstring(argv[1]);
-	testFindMedianSortedArrays(argv);
+//	testFindMedianSortedArrays(argv);
+	testLongestPalindrome(argv[1]);
 	return 0;
 }
