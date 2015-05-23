@@ -290,9 +290,10 @@ char* longestPalindrome(char* s) {
 			else
 				f[i][j] = false;
 		}
-	char* ret = (char*) malloc(sizeof(char) * l);
+	char* ret = (char*) malloc(sizeof(char) * (l+1));
 	for (i = 0; i < l; i++)
 		ret[i] = s[m+i];
+	ret[i] = '\0';
 	for (i = 0; i < len; i++)
 		free(f[i]);
 	free(f);
