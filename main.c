@@ -201,7 +201,7 @@ int main(int argc, char* argv[])
 //	testTwoSum(argc, argv);
 //	testLengthOfLongestSubstring(argv[1]);
 //	testFindMedianSortedArrays(argv);
-	//testLongestPalindrome(argv[1]);
-	testConvert(argv[1], atoi(argv[2]));
+	testLongestPalindrome(argv[1]);
+//	testConvert(argv[1], atoi(argv[2]));
 	return 0;
 }

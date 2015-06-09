@@ -336,3 +336,8 @@ char* convert(char* s, int numRows) {
 	ret[len] = '\0';
 	return ret;
 }
+
+int reverse(int x) {
+	//see Solution.java
+	return 0;
+}

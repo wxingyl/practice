@@ -34,4 +34,17 @@ public class Solution {
         }
         return ret;
     }
+
+    public int reverse(int x) {
+        String maxIntStr = Integer.toString(Integer.MAX_VALUE);
+        String minIntStr = Integer.toString(Integer.MIN_VALUE);
+        String s = new StringBuilder(Integer.toString(x)).reverse().toString();
+        if (x < 0) {
+            s = '-' + s.substring(0, s.length()-1);
+        }
+        
+        if ((x > 0 && s.length() == maxIntStr.length() && s.compareTo(maxIntStr) > 0)
+                || (x < 0 && s.length() == minIntStr.length() && s.compareTo(minIntStr) > 0)) return 0;
+        else return Integer.valueOf(s);
+    }
 }
