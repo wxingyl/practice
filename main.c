@@ -18,7 +18,7 @@ void link_test()
 		link_append(head, rand() / (RAND_MAX + 1.0) * 100);
 	}
     link_print(head);
-    link_clear(head);
+    link_destory(head);
 }
 
 void stack_test()
@@ -179,6 +179,12 @@ void testLongestPalindrome(char* s) {
 		free(pa);
 }
 
+void testConvert(char* s, int numRows) {
+	char* ret = convert(s, numRows);
+	printf("ret: %s\n", ret);
+	free(ret);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -195,6 +201,7 @@ int main(int argc, char* argv[])
 //	testTwoSum(argc, argv);
 //	testLengthOfLongestSubstring(argv[1]);
 //	testFindMedianSortedArrays(argv);
-	testLongestPalindrome(argv[1]);
+	//testLongestPalindrome(argv[1]);
+	testConvert(argv[1], atoi(argv[2]));
 	return 0;
 }

@@ -299,3 +299,40 @@ char* longestPalindrome(char* s) {
 	free(f);
 	return ret;
 }
+
+char* convert(char* s, int numRows) {
+	if (numRows <= 0) return NULL;
+	if (numRows == 1) return s;
+	Node** rows = (Node**) malloc(sizeof(Node*) * numRows);
+	int i, count = 0;
+	for (i = 0; i < numRows; i++) rows[i] = NULL;
+	int len = strlen(s), n = 0, num = 2 * (numRows - 1);
+	while(count < len) {
+		for (i = 0; i < num && count < len; i++) {
+			char ch = s[i+n*num];
+			int tmp = i < numRows ? i : (num-i); 
+			if (rows[tmp] == NULL) {
+				Node* node = link_create();
+				node->value = ch;
+				rows[tmp] = node;
+			} else {
+				link_append(rows[tmp], ch);
+			}
+			count++;
+		}
+		n++;
+	}
+	char* ret = (char*) malloc(sizeof(char)*(len+1));
+	for (i = 0, n = 0; i < numRows; i++) {
+		Node* node = rows[i];
+		//printf("i : %d\n", i);
+		//link_print(node);
+		while(node != NULL) {
+			ret[n++] = node->value;
+			node = node->next;
+		}
+		link_destory(rows[i]);
+	}
+	ret[len] = '\0';
+	return ret;
+}

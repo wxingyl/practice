@@ -44,32 +44,23 @@ Node* link_push(Node *head, int value)
     return head;
 }
 
-void link_clear(Node *head)
-{
-    Node *p, *pre;
-    p = pre = head;
-	while(head->next != NULL) {
-		p = head->next;
-		pre = p->next;
-		free(p);
-		head->next = pre;
-	}
-}
-
 void link_destory(Node* head)
 {
-
-    link_clear(head);
-    free(head);
-    head = NULL;
+    if (head == NULL) return;
+	Node* p = head;
+	while(head != NULL) {
+		p = p->next;
+		free(head);
+		head = p;
+	}
 }
 
 void link_print(Node *head)
 {
 	int i = 0;
-	while(head->next != NULL) {
-		head = head->next;
+	while(head != NULL) {
 		printf("index: %d, value: %d\n", i++, head->value);
+		head = head->next;
 	}
 }
 

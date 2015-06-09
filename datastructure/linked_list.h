@@ -11,8 +11,6 @@ Node* link_append(Node* head, int value);
 //¡¥±ÌÕ∑≤Â»Îvalue
 Node* link_push(Node *head, int value);
 
-void link_clear(Node *head);
-
 void link_print(Node *head);
 
 void link_destory(Node* head);
