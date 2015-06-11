@@ -201,7 +201,9 @@ int main(int argc, char* argv[])
 //	testTwoSum(argc, argv);
 //	testLengthOfLongestSubstring(argv[1]);
 //	testFindMedianSortedArrays(argv);
-	testLongestPalindrome(argv[1]);
+//	testLongestPalindrome(argv[1]);
 //	testConvert(argv[1], atoi(argv[2]));
+	int i = atoi(argv[1]);
+	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
 	return 0;
 }

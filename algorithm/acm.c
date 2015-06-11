@@ -341,3 +341,19 @@ int reverse(int x) {
 	//see Solution.java
 	return 0;
 }
+bool isPalindrome(int x) {
+	if (x < 10) return x >= 0;
+	int cursor = 10;
+	while(x / cursor >= 10) cursor *= 10;
+	if (x / cursor == x % 10) {
+		x = (x % cursor) / 10;
+		cursor /= 100;
+		while (cursor > 0 && x > 0 && x / cursor == 0) {
+			if (x % 10 == 0) x /= 10; 
+			else return false;
+			cursor /= 100;
+		}
+		return isPalindrome(x);	
+	} else 
+		return false;
+}
