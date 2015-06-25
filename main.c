@@ -192,6 +192,25 @@ void testLongestCommonPrefix(int argc, char* argv[]) {
 	puts(longestCommonPrefix(arg, argc-1));
 }
 
+void testRemoveNthFromEnd(int argc, char* argv[]) {
+	struct ListNode* head = NULL;
+	struct ListNode* p;
+	for (int i = 1; i < argc - 1; i++) {
+		struct ListNode* node = (struct ListNode*) malloc(sizeof(struct ListNode));
+		node->val = atoi(argv[i]);
+		node->next = NULL;
+		if (head == NULL) {
+			head = node;
+			p = node;
+		} else {
+			p->next = node;
+			p = p->next;
+		}
+	}
+	head = removeNthFromEnd(head, atoi(argv[argc-1]));
+	print_list_node(head);
+	free_list_node(head);
+}
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -212,6 +231,7 @@ int main(int argc, char* argv[])
 //	testConvert(argv[1], atoi(argv[2]));
 //	int i = atoi(argv[1]);
 //	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
-	testLongestCommonPrefix(argc, argv);
+//	testLongestCommonPrefix(argc, argv);
+	testRemoveNthFromEnd(argc, argv);
 	return 0;
 }

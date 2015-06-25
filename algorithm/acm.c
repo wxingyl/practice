@@ -175,7 +175,8 @@ int* twoSum(int* nums, int numsSize, int target) {
 void print_list_node(struct ListNode* l) {
 	struct ListNode* p = l;
 	while(p != NULL) {
-		printf("%d->", p->val);
+		if (p == l) printf("%d", p->val);
+		else printf("-->%d", p->val);
 		p = p->next;
 	}
 	putchar('\n');
@@ -390,4 +391,25 @@ char* longestCommonPrefix(char** strs, int strsSize) {
 	for (i = 0; i < size; i++) ret[i] = strs[0][i];
 	ret[i] = '\0';
 	return ret;
+}
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+	if (head == NULL) return head;
+	struct ListNode* p = head;
+	int len = 1;
+	while(p->next != NULL && len++) p = p->next;
+	p = head;
+	struct ListNode* p1 = NULL;
+	for (int j = 0; j < len - n; j++) {
+		p1 = p;
+		p = p->next;
+	}
+	struct ListNode* p2 = p->next;
+	if (p ==  head) {
+		head = p2;
+	} else {
+		p1->next = p2;
+	}
+	free(p);
+	return head;
 }

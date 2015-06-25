@@ -176,4 +176,8 @@ int maxArea(int* height, int heightSize);
  * https://leetcode.com/problems/longest-common-prefix/
  */
 char* longestCommonPrefix(char** strs, int strsSize);
+/**
+ * https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+ */
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 #endif
