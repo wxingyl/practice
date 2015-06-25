@@ -47,4 +47,38 @@ public class Solution {
                 || (x < 0 && s.length() == minIntStr.length() && s.compareTo(minIntStr) > 0)) return 0;
         else return Integer.valueOf(s);
     }
+
+    /**
+     * https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+     */
+    public List<String> letterCombinations(String digits) {
+        List<String> ret = new LinkedList<String>();
+        if (digits == null || digits.isEmpty()) return ret;
+        Map<Character, String> map = new HashMap<Character, String>();
+        map.put('2', "abc");
+        map.put('3', "def");
+        map.put('4', "ghi");
+        map.put('5', "jkl");
+        map.put('6', "mno");
+        map.put('7', "pqrs");
+        map.put('8', "tuv");
+        map.put('9', "wxyz");
+        fun(null, digits, map, ret);
+        return ret;
+    }
+
+    public void fun(String s, String digits, Map<Character, String> map, List<String> ret) {
+        String subStr = digits.substring(1);
+        boolean add = subStr.isEmpty();
+        String charStr = map.get(digits.charAt(0));
+        if (charStr == null || charStr.isEmpty()) {
+            fun(s, subStr, map, ret);
+        }  else {
+            if (s == null) s = "";
+            for (char ch : charStr.toCharArray()) {
+                if (add) ret.add(s + ch);
+                else fun(s + ch, subStr, map, ret);
+            }
+        }
+    }
 }
