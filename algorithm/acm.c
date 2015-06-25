@@ -341,6 +341,7 @@ int reverse(int x) {
 	//see Solution.java
 	return 0;
 }
+
 bool isPalindrome(int x) {
 	if (x < 10) return x >= 0;
 	int cursor = 10;
@@ -356,4 +357,37 @@ bool isPalindrome(int x) {
 		return isPalindrome(x);	
 	} else 
 		return false;
+}
+
+int maxArea(int* height, int heightSize) {
+	int i = 0, j = heightSize - 1, max = 0;
+	while(i < j) {
+		int tmp = (height[j] >  height[i] ? height[i] : height[j]) * (j-i);
+		max = max > tmp ? max : tmp;
+		if (height[i] < height[j]) i++;
+		else j--;
+	}
+	return max;
+}
+
+char* longestCommonPrefix(char** strs, int strsSize) {
+	if (strsSize <= 0) return "";
+	int minIndex = 0, i;
+	int lenArray[strsSize];
+	for (i = 0; i < strsSize; i++) {
+		lenArray[i] = strlen(strs[i]);
+		if (lenArray[minIndex] > lenArray[i]) minIndex = i;
+	}
+	for (i = 0; i < lenArray[minIndex]; i++) {
+		char ch = strs[minIndex][i];
+		int j = 0;
+		while(j < strsSize && ch == strs[j][i]) j++;
+		if (j != strsSize) break; 
+	}
+	int size = i;
+	printf("size: %d, %d\n", size, minIndex);
+	char* ret = (char *)malloc(sizeof(char) * (size+1));
+	for (i = 0; i < size; i++) ret[i] = strs[0][i];
+	ret[i] = '\0';
+	return ret;
 }

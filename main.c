@@ -185,6 +185,13 @@ void testConvert(char* s, int numRows) {
 	free(ret);
 }
 
+void testLongestCommonPrefix(int argc, char* argv[]) {
+	char* arg[argc-1];
+	for (int i = 1; i < argc; i++)
+		arg[i-1] = argv[i];
+	puts(longestCommonPrefix(arg, argc-1));
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -203,7 +210,8 @@ int main(int argc, char* argv[])
 //	testFindMedianSortedArrays(argv);
 //	testLongestPalindrome(argv[1]);
 //	testConvert(argv[1], atoi(argv[2]));
-	int i = atoi(argv[1]);
-	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
+//	int i = atoi(argv[1]);
+//	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
+	testLongestCommonPrefix(argc, argv);
 	return 0;
 }
