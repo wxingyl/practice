@@ -2,8 +2,10 @@ bin/
 obj/
 practice.cbp
 practice.depend
+practice.layout
 *.o
 test
 tags
 .idea
-python/.idea
+python/.*/
+python/src/*.pyc
