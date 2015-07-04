@@ -86,6 +86,7 @@ static void _quick_sort(int a[], int left, int right)
     _quick_sort(a, i+1, right);
 }
 
+//¿ìËÙÅÅĞò
 void quick_sort(int data[], int size)
 {
     _quick_sort(data, 0, size-1);

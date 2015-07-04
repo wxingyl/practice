@@ -4,8 +4,8 @@ practice.cbp
 practice.depend
 practice.layout
 *.o
-test
 tags
 .idea
 python/.*/
 python/src/*.pyc
+python/.idea
