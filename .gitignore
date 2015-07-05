@@ -1,8 +1,6 @@
 bin/
 obj/
-practice.cbp
-practice.depend
-practice.layout
+practice.*
 *.o
 tags
 .idea
