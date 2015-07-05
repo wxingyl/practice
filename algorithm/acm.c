@@ -417,70 +417,8 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
 /**
  ** Return an array of size *returnSize.
  ** Note: The returned array must be malloced, assume caller calls free().
- * f(n) = f(n-1) + f(n-2) * 3;
+ ** see Solution.java
  **/
-static char* allocCharArray(int len) {
-	char* p = (char*) malloc((len+1) * sizeof(char));
-	p[len] = '\0';
-	return p;
-}
-
-static char** allocCharPointArray(int len) {
-	char** p = (char**) malloc(len * sizeof(char*));
-	return p;
-}
-
 char** generateParenthesis(int n, int* returnSize) {
-	char** ret = NULL;
-	if (n <= 0) {
-		*returnSize = 0;
-		return NULL;
-	} else if (n == 1) {
-		*returnSize = 1;
-		ret = allocCharPointArray(*returnSize);
-		char* ch = allocCharArray(2);
-		ret[0] = strcpy(ch, "()");
-		return ret;
-	} else if (n == 2) {
-		*returnSize = 2;
-		ret = allocCharPointArray(*returnSize);
-		char* ch = allocCharArray(4);
-		ret[0] = strcpy(ch, "(())");
-        ch = allocCharArray(4);
-        ret[1] = strcpy(ch, "()()");
-		return ret;
-	}
-	int size1 = 0, size2 = 0, i, j;
-	char** ret1 = generateParenthesis(n-1, &size1);
-	char** ret2 = generateParenthesis(n-2, &size2);
-	*returnSize = size1 + 3 * size2;
-	ret = allocCharPointArray(*returnSize);
-	const int arrSize = 2 * n;
-	for (i = 0; i < size1; i++) {
-		char* ch = allocCharArray(arrSize);
-		strcpy(ch, "()");
-		strcat(ch, ret1[i]);
-		free(ret1[i]);
-		ret[i] = ch;
-	}
-	free(ret1);
-	for (j = 0; j < size2; j++) {
-		char* ch = allocCharArray(arrSize);
-		strcpy(ch, "((");
-		strcat(ch, ret2[j]);
-		strcat(ch, "))");
-		ret[i++] = ch;
-		ch = allocCharArray(arrSize);
-		strcpy(ch, "(()");
-		strcat(ch, ret2[j]);
-		strcat(ch, ")");
-		ret[i++] = ch;
-		ch = allocCharArray(arrSize);
-		strcpy(ch, "(())");
-		strcat(ch, ret2[j]);
-		ret[i++] = ch;
-		free(ret2[j]);
-	}
-	free(ret2);
-	return ret;
+	return NULL;
 }

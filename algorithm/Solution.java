@@ -67,6 +67,27 @@ public class Solution {
         return ret;
     }
 
+
+    private void generateParenthesis(List<String> list, String s, int l, int r) {
+        if (l == 0 && r == 0) {
+            list.add(s);
+            return;
+        }
+        if (l > 0) generateParenthesis(list, s + '(', l-1, r);
+        if (l < r && r > 0) generateParenthesis(list, s + ')', l, r-1);
+    }
+
+    /**
+     * https://leetcode.com/problems/generate-parentheses/
+     */
+    public List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<String>();
+        if (n > 0) {
+            generateParenthesis(list, "", n, n);
+        }
+        return list;
+    }
+
     public void fun(String s, String digits, Map<Character, String> map, List<String> ret) {
         String subStr = digits.substring(1);
         boolean add = subStr.isEmpty();
