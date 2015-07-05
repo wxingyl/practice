@@ -85,14 +85,14 @@ void test_rotate(char* argv[])
 	printf("n = %d, k = %d :\n", n, k);
 	int i;
 	for (i = 0; i < n; i++) {
-		if (i % 5 == 0) putchar('\n'); 
+		if (i % 5 == 0) putchar('\n');
 		printf("\t%d", p[i]);
-	} 
+	}
 	putchar('\n');
 	rotate(p, n, k);
 	printf("after rotate:\n");
 	for (i = 0; i < n; i++) {
-		if (i % 5 == 0) putchar('\n'); 
+		if (i % 5 == 0) putchar('\n');
 		printf("\t%d", p[i]);
 	}
 	putchar('\n');
@@ -130,7 +130,7 @@ void testTwoSum(int argc, char* argv[]) {
 	struct ListNode *p1 = NULL, *p2 = NULL, *p = NULL;
 	for (i = 2; i < argc; i++) {
 		if (i <= index && p1 == NULL) {
-			p1 = (struct ListNode*) malloc(sizeof(struct ListNode)); 
+			p1 = (struct ListNode*) malloc(sizeof(struct ListNode));
 			p = p1;
 		} else if (i > index && p2 == NULL) {
 			p2 = (struct ListNode*) malloc(sizeof(struct ListNode));
@@ -166,7 +166,7 @@ void testFindMedianSortedArrays(char* argv[]) {
 	for (i = 0; i < len1; i++)
 		nums1[i] = atoi(argv[i+3]);
 	for (i = 0; i < len2; i++)
-		nums2[i] = atoi(argv[i+3+len1]); 
+		nums2[i] = atoi(argv[i+3+len1]);
 	printf("MedianSortedArrays: %f\n", findMedianSortedArrays(nums1, len1, nums2, len2));
 	free(nums1);
 	free(nums2);
@@ -187,7 +187,8 @@ void testConvert(char* s, int numRows) {
 
 void testLongestCommonPrefix(int argc, char* argv[]) {
 	char* arg[argc-1];
-	for (int i = 1; i < argc; i++)
+	int i;
+	for (i = 1; i < argc; i++)
 		arg[i-1] = argv[i];
 	puts(longestCommonPrefix(arg, argc-1));
 }
@@ -195,7 +196,8 @@ void testLongestCommonPrefix(int argc, char* argv[]) {
 void testRemoveNthFromEnd(int argc, char* argv[]) {
 	struct ListNode* head = NULL;
 	struct ListNode* p;
-	for (int i = 1; i < argc - 1; i++) {
+	int i;
+	for (i = 1; i < argc - 1; i++) {
 		struct ListNode* node = (struct ListNode*) malloc(sizeof(struct ListNode));
 		node->val = atoi(argv[i]);
 		node->next = NULL;
@@ -214,15 +216,15 @@ void testRemoveNthFromEnd(int argc, char* argv[]) {
 
 
 void testGenerateParenthesis(int n) {
-	int size = 0;
+	int size = 0, i;
 	char** ret = generateParenthesis(n, &size);
-	printf("size: %d\n", size);
-	for (int i = 0; i < size; i++) {
+	for (i = 0; i < size; i++) {
 		puts(ret[i]);
 		putchar('\n');
 		free(ret[i]);
 	}
 	free(ret);
+    printf("size: %d\n", size);
 }
 
 int main(int argc, char* argv[])
@@ -247,6 +249,7 @@ int main(int argc, char* argv[])
 //	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
 //	testLongestCommonPrefix(argc, argv);
 //	testRemoveNthFromEnd(argc, argv);
-	testGenerateParenthesis(atoi(argv[1]));
+//	testGenerateParenthesis(atoi(argv[1]));
+    testGenerateParenthesis(10);
 	return 0;
 }

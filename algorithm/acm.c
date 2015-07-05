@@ -12,7 +12,7 @@ char* lcs(const char* str1, const int len1, const char* str2, const int len2)
 	for (i = 0; i < len1+1; i++)
 		arr[i][0] = 0;
 	for (i = 0; i < len2+1; i++)
-		arr[0][j] = 0;
+		arr[0][i] = 0;
 	for(i = 1; i < len1+1; i++)
 		for(j = 1; j < len2+1; j++)
 			if (str1[i] == str2[j])
@@ -240,7 +240,7 @@ int lengthOfLongestSubstring(char* s) {
 	}
 	tmp = j - i;
 	ret = ret < tmp ? tmp : ret;
-	return ret;    
+	return ret;
 }
 
 int min(int a, int b) {
@@ -248,12 +248,12 @@ int min(int a, int b) {
 }
 
 int findKth(int* a, int m, int* b, int n, int k) {
-	if (m > n) return findKth(b, n, a, m, k);	
+	if (m > n) return findKth(b, n, a, m, k);
 	if (m == 0) return b[k-1];
 	if (k <= 1) return min(a[0], b[0]);
 	int i = min(k / 2, m);
 	int j = k - i;
-	if (a[i-1] < b[j-1]) 
+	if (a[i-1] < b[j-1])
 		return findKth(a + i, m - i, b, n, k - i);
 	else if (a[i-1] > b[j-1])
 		return findKth(a, m, b + j, n - j, k - j);
@@ -311,7 +311,7 @@ char* convert(char* s, int numRows) {
 	while(count < len) {
 		for (i = 0; i < num && count < len; i++) {
 			char ch = s[i+n*num];
-			int tmp = i < numRows ? i : (num-i); 
+			int tmp = i < numRows ? i : (num-i);
 			if (rows[tmp] == NULL) {
 				Node* node = link_create();
 				node->value = ch;
@@ -351,12 +351,12 @@ bool isPalindrome(int x) {
 		x = (x % cursor) / 10;
 		cursor /= 100;
 		while (cursor > 0 && x > 0 && x / cursor == 0) {
-			if (x % 10 == 0) x /= 10; 
+			if (x % 10 == 0) x /= 10;
 			else return false;
 			cursor /= 100;
 		}
-		return isPalindrome(x);	
-	} else 
+		return isPalindrome(x);
+	} else
 		return false;
 }
 
@@ -383,7 +383,7 @@ char* longestCommonPrefix(char** strs, int strsSize) {
 		char ch = strs[minIndex][i];
 		int j = 0;
 		while(j < strsSize && ch == strs[j][i]) j++;
-		if (j != strsSize) break; 
+		if (j != strsSize) break;
 	}
 	int size = i;
 	printf("size: %d, %d\n", size, minIndex);
@@ -396,11 +396,11 @@ char* longestCommonPrefix(char** strs, int strsSize) {
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
 	if (head == NULL) return head;
 	struct ListNode* p = head;
-	int len = 1;
+	int len = 1, j;
 	while(p->next != NULL && len++) p = p->next;
 	p = head;
 	struct ListNode* p1 = NULL;
-	for (int j = 0; j < len - n; j++) {
+	for (j = 0; j < len - n; j++) {
 		p1 = p;
 		p = p->next;
 	}
@@ -430,13 +430,6 @@ static char** allocCharPointArray(int len) {
 	return p;
 }
 
-void printChars(char** s, int len) {
-	for(int i = 0; i < len; i++) {
-		puts(s[i]);
-		putchar('\n');
-	}
-}
-
 char** generateParenthesis(int n, int* returnSize) {
 	char** ret = NULL;
 	if (n <= 0) {
@@ -446,13 +439,21 @@ char** generateParenthesis(int n, int* returnSize) {
 		*returnSize = 1;
 		ret = allocCharPointArray(*returnSize);
 		char* ch = allocCharArray(2);
-		ret[0] = strcpy(ch, "()"); 
+		ret[0] = strcpy(ch, "()");
 		return ret;
-	} 
-	int size1 = 0, size2 = 0, i;
+	} else if (n == 2) {
+		*returnSize = 2;
+		ret = allocCharPointArray(*returnSize);
+		char* ch = allocCharArray(4);
+		ret[0] = strcpy(ch, "(())");
+        ch = allocCharArray(4);
+        ret[1] = strcpy(ch, "()()");
+		return ret;
+	}
+	int size1 = 0, size2 = 0, i, j;
 	char** ret1 = generateParenthesis(n-1, &size1);
 	char** ret2 = generateParenthesis(n-2, &size2);
-	*returnSize = size1 + 2 * size2;
+	*returnSize = size1 + 3 * size2;
 	ret = allocCharPointArray(*returnSize);
 	const int arrSize = 2 * n;
 	for (i = 0; i < size1; i++) {
@@ -463,23 +464,23 @@ char** generateParenthesis(int n, int* returnSize) {
 		ret[i] = ch;
 	}
 	free(ret1);
-	for (int j = 0; j < size2; j++) {
+	for (j = 0; j < size2; j++) {
 		char* ch = allocCharArray(arrSize);
 		strcpy(ch, "((");
-		strcat(ch, ret2[i]);
+		strcat(ch, ret2[j]);
 		strcat(ch, "))");
 		ret[i++] = ch;
 		ch = allocCharArray(arrSize);
 		strcpy(ch, "(()");
-		strcat(ch, ret2[i]);
+		strcat(ch, ret2[j]);
 		strcat(ch, ")");
 		ret[i++] = ch;
 		ch = allocCharArray(arrSize);
 		strcpy(ch, "(())");
-		strcat(ch, ret2[i]);
+		strcat(ch, ret2[j]);
 		ret[i++] = ch;
 		free(ret2[j]);
 	}
-	if (ret2 != NULL) free(ret2);
+	free(ret2);
 	return ret;
 }

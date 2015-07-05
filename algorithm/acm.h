@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 
-void printChars(char** s, int len);
 //最长公共子序列
 char* lcs(const char* str1, const int len1, const char* str2, const int len2);
 //生成指定数目，范围的随机数，值取值为[min, max)
@@ -13,7 +12,7 @@ void init_rand(int* a, const int size, const int min, const int max);
  * Given an integer n, return the number of trailing zeroes in n!.
  * Note: Your solution should be in logarithmic time complexity.
  */
-int trailingZeroes(int n); 
+int trailingZeroes(int n);
 /**
  * https://leetcode.com/problems/bitwise-and-of-numbers-range/
  * Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
@@ -50,7 +49,7 @@ int singleNumber(int* nums, int numsSize);
  * Note:
  Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
  */
-int singleNumberll(int* nums, int numsSize); 
+int singleNumberll(int* nums, int numsSize);
 /**
  * https://leetcode.com/problems/longest-consecutive-sequence/
  * Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
@@ -71,7 +70,7 @@ int longestConsecutive(int* nums, int numsSize);
  *
  * If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).
  */
-int minSubArrayLen(int s, int* nums, int numsSize); 
+int minSubArrayLen(int s, int* nums, int numsSize);
 /**
  * https://leetcode.com/problems/two-sum/
  * Given an array of integers, find two numbers such that they add up to a specific target number.
@@ -130,7 +129,7 @@ char* longestPalindrome(char* s);
  * string convert(string text, int nRows);
  * convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
  */
-char* convert(char* s, int numRows); 
+char* convert(char* s, int numRows);
 /**
  * https://leetcode.com/problems/reverse-integer/
  * Reverse digits of an integer.
