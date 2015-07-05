@@ -211,6 +211,20 @@ void testRemoveNthFromEnd(int argc, char* argv[]) {
 	print_list_node(head);
 	free_list_node(head);
 }
+
+
+void testGenerateParenthesis(int n) {
+	int size = 0;
+	char** ret = generateParenthesis(n, &size);
+	printf("size: %d\n", size);
+	for (int i = 0; i < size; i++) {
+		puts(ret[i]);
+		putchar('\n');
+		free(ret[i]);
+	}
+	free(ret);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -232,6 +246,7 @@ int main(int argc, char* argv[])
 //	int i = atoi(argv[1]);
 //	printf("%s, %d: %d\n", argv[1], i, isPalindrome(atoi(argv[1])));
 //	testLongestCommonPrefix(argc, argv);
-	testRemoveNthFromEnd(argc, argv);
+//	testRemoveNthFromEnd(argc, argv);
+	testGenerateParenthesis(atoi(argv[1]));
 	return 0;
 }

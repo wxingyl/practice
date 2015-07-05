@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
+void printChars(char** s, int len);
 //最长公共子序列
 char* lcs(const char* str1, const int len1, const char* str2, const int len2);
 //生成指定数目，范围的随机数，值取值为[min, max)
@@ -180,4 +181,13 @@ char* longestCommonPrefix(char** strs, int strsSize);
  * https://leetcode.com/problems/remove-nth-node-from-end-of-list/
  */
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
+/**
+ * https://leetcode.com/problems/generate-parentheses/
+ * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+ *
+ * For example, given n = 3, a solution set is:
+ *
+ * "((()))", "(()())", "(())()", "()(())", "()()()"
+ */
+char** generateParenthesis(int n, int* returnSize);
 #endif
