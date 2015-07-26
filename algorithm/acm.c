@@ -422,3 +422,25 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
 char** generateParenthesis(int n, int* returnSize) {
 	return NULL;
 }
+
+bool searchMatrix(int** matrix, int matrixRowSize, int matrixColSize, int target) {
+	int index = 0;
+	for (; index < matrixColSize; index++) {
+		if (target <= matrix[index][matrixRowSize-1]) break;
+	}
+	if (index == matrixColSize) {
+		return false;
+	}
+	int i = 0, j = matrixRowSize - 1;
+	while(j >= i) {
+		int m = i + ((j - i) >> 1);
+		if (matrix[index][m] < target) {
+			i = m + 1;
+		} else if (matrix[index][m] > target) {
+			j = m - 1;
+		} else {
+			return true;
+		}
+	}
+	return false;
+}

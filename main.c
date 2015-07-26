@@ -227,6 +227,25 @@ void testGenerateParenthesis(int n) {
     printf("size: %d\n", size);
 }
 
+void testSearchMatrix(int argc, char* argv[]) {
+	int m = atoi(argv[1]), n = atoi(argv[2]);
+	int** a = (int**) malloc(sizeof(int*) * n);
+	for (int i = 0; i < n; i++) {
+		a[i] = (int*) malloc(sizeof(int) * m);
+		for (int j = 0; j < m; j++) {
+			a[i][j] = atoi(argv[m * i + j + 3]);
+			printf("\t%d", a[i][j]);
+		}
+		putchar('\n');
+	}
+	int target = atoi(argv[m*n+3]);
+	printf("target: %d, m: %d, n: %d, contains: %d\n", target, m, n, searchMatrix(a, m, n, target));
+	for (int i = 0; i < n; i++) {
+		free(a[i]);
+	}
+	free(a);
+}
+
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -250,6 +269,7 @@ int main(int argc, char* argv[])
 //	testLongestCommonPrefix(argc, argv);
 //	testRemoveNthFromEnd(argc, argv);
 //	testGenerateParenthesis(atoi(argv[1]));
-    testGenerateParenthesis(10);
+//    testGenerateParenthesis(10);
+	testSearchMatrix(argc, argv);
 	return 0;
 }

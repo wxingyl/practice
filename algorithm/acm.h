@@ -189,4 +189,8 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
  * "((()))", "(()())", "(())()", "()(())", "()()()"
  */
 char** generateParenthesis(int n, int* returnSize);
+/**
+ * https://leetcode.com/problems/search-a-2d-matrix/
+ */
+bool searchMatrix(int** matrix, int matrixRowSize, int matrixColSize, int target);
 #endif
