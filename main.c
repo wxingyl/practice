@@ -246,6 +246,23 @@ void testSearchMatrix(int argc, char* argv[]) {
 	free(a);
 }
 
+void testMaximalSquare(int argc, char* argv[]) {
+	int m = atoi(argv[1]), n = atoi(argv[2]);
+	char** a = (char**) malloc(sizeof(char*) * n);
+	for (int i = 0; i < n; i++) {
+		a[i] = (char*) malloc(sizeof(char) * m);
+		for (int j = 0; j < m; j++) {
+			a[i][j] = argv[m * i + j + 3][0];
+			printf("\t%c", a[i][j]);
+		}
+		putchar('\n');
+	}
+	printf("m: %d, n: %d, rea: %d\n", m, n, maximalSquare(a, m, n));
+	for (int i = 0; i < n; i++) {
+		free(a[i]);
+	}
+	free(a);
+}
 int main(int argc, char* argv[])
 {
 //	rand_test();
@@ -270,6 +287,7 @@ int main(int argc, char* argv[])
 //	testRemoveNthFromEnd(argc, argv);
 //	testGenerateParenthesis(atoi(argv[1]));
 //    testGenerateParenthesis(10);
-	testSearchMatrix(argc, argv);
+//	testSearchMatrix(argc, argv);
+	testMaximalSquare(argc, argv);
 	return 0;
 }

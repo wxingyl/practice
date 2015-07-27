@@ -444,3 +444,47 @@ bool searchMatrix(int** matrix, int matrixRowSize, int matrixColSize, int target
 	}
 	return false;
 }
+
+bool searchMatrix2(int** matrix, int matrixRowSize, int matrixColSize, int target) {
+	int i = 0, j = matrixRowSize;
+	while(i < matrixColSize && j >= 0) {
+		if (matrix[i][j] == target) {
+			return true;
+		} else if (matrix[i][j] > target) {
+			j--;
+		} else {
+			i++;
+		}
+	}
+	return false;
+}
+
+static int min3(int a, int b, int c) {
+	int t = a < b ? a : b;
+	return t < c ? t : c; 
+}
+
+int maximalSquare(char** matrix, int matrixRowSize, int matrixColSize) {
+	if (matrixRowSize <= 0 || matrixColSize <= 0) return 0;
+	int** f = (int**) malloc(sizeof(int*) * (matrixColSize+1));
+	int i, j;
+	for (i = 0; i <= matrixColSize; i++) {
+		f[i] = (int*) malloc(sizeof(int) * (matrixRowSize+1));
+		for (j = 0; j <= matrixRowSize; j++) {
+			f[i][j] = 0; 
+		}
+	}
+	int max = 0;
+	for (i = 1; i <= matrixColSize; i++) {
+		for (j = 1; j <= matrixRowSize; j++) {
+			if (matrix[i-1][j-1] == '1') {
+				f[i][j] = min3(f[i-1][j-1], f[i-1][j], f[i][j-1]);
+				max = max < f[i][j] ? f[i][j] : max;
+			}
+		}
+	}
+	for(i = 0; i <= matrixColSize; i++)
+		free(f[i]);
+	free(f);
+	return max * max;
+}
