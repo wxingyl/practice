@@ -488,3 +488,10 @@ int maximalSquare(char** matrix, int matrixRowSize, int matrixColSize) {
 	free(f);
 	return max * max;
 }
+
+/**
+ * see python implement
+ */
+char** restoreIpAddresses(char* s, int* returnSize) {
+	return NULL;	    
+}

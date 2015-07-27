@@ -226,4 +226,18 @@ bool searchMatrix2(int** matrix, int matrixRowSize, int matrixColSize, int targe
  * Return 4.
  */
 int maximalSquare(char** matrix, int matrixRowSize, int matrixColSize);
+/**
+ * https://leetcode.com/problems/restore-ip-addresses/
+ * Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+ *
+ * For example:
+ * Given "25525511135",
+ *
+ * return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
+ */
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** restoreIpAddresses(char* s, int* returnSize);
 #endif
