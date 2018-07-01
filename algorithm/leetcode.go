@@ -21,7 +21,36 @@ func main() {
 	fmt.Println(s + ": " + longestPalindrome(s))
 	s = "abacdfgdcaba"
 	fmt.Println(s + ": " + longestPalindrome(s))
+	fmt.Println(lemonadeChange([]int{5, 5, 5, 10, 20}))
+	fmt.Println(lemonadeChange([]int{5, 5, 10}))
+	fmt.Println(lemonadeChange([]int{10, 10}))
+	fmt.Println(lemonadeChange([]int{5, 5, 10, 10, 20}))
+}
 
+//https://leetcode-cn.com/contest/weekly-contest-91/problems/lemonade-change/
+func lemonadeChange(bills []int) bool {
+	billLen := len(bills)
+	val1 := 0
+	val2 := 0
+	for i := 0; i < billLen; i++ {
+		if bills[i] == 5 {
+			val1 += 1
+		} else if bills[i] == 10 {
+			val1 -= 1
+			val2 += 1
+		} else {
+			if val2 > 0 {
+				val2 -= 1
+				val1 -= 1
+			} else {
+				val1 -= 3
+			}
+		}
+		if val1 < 0 {
+			return false
+		}
+	}
+	return true
 }
 
 //issue:  https://leetcode-cn.com/problems/longest-palindromic-substring/description/
