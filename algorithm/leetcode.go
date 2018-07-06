@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 	"sort"
 )
@@ -25,6 +26,103 @@ func main() {
 	fmt.Println(lemonadeChange([]int{5, 5, 10}))
 	fmt.Println(lemonadeChange([]int{10, 10}))
 	fmt.Println(lemonadeChange([]int{5, 5, 10, 10, 20}))
+
+	treeArr := []int{3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4}
+	tree := buildTree(treeArr)
+	fmt.Println(distanceK(&tree[0], &tree[1], 2))
+}
+
+//https://leetcode-cn.com/contest/weekly-contest-91/problems/all-nodes-distance-k-in-binary-tree/
+
+//通过数组构建二叉树
+func buildTree(treeArr []int) []TreeNode {
+	treeArrLen := len(treeArr)
+	tree := make([]TreeNode, len(treeArr))
+	for i := 0; i < treeArrLen; i++ {
+		if treeArr[i] == -1 {
+			continue
+		}
+		tree[i] = TreeNode{
+			Val: treeArr[i],
+		}
+	}
+	preIndex := 0
+	for n := 1; preIndex < treeArrLen; n *= 2 {
+		nextLevel := preIndex + n
+		if nextLevel > treeArrLen {
+			nextLevel = treeArrLen
+		}
+		for i := 0; i < n; i++ {
+			index := i + preIndex
+			if index >= treeArrLen {
+				break
+			}
+			val := treeArr[index]
+			if val == -1 {
+				continue
+			}
+			childIndex := preIndex + n + 2*i
+			if childIndex+1 < treeArrLen {
+				tree[index].Left = &tree[childIndex]
+				tree[index].Right = &tree[childIndex+1]
+			} else if childIndex < treeArrLen {
+				tree[index].Left = &tree[childIndex]
+			}
+		}
+		preIndex += n
+	}
+	return tree
+}
+
+//Definition for a binary tree node.
+type TreeNode struct {
+	Val         int
+	Left, Right *TreeNode
+}
+
+func getPrefixNode(statMap map[int]int, val int) []int {
+	prefix := []int{val}
+	for statMap[val] != -1 {
+		val = statMap[val]
+		prefix = append([]int{val}, prefix...)
+	}
+	return prefix
+}
+
+func distanceK(root *TreeNode, target *TreeNode, K int) []int {
+	statMap := make(map[int]int)
+	node := root
+	nodeList := list.New()
+	preVal := -1
+	for node != nil || nodeList.Len() > 0 {
+		if node != nil {
+			statMap[node.Val] = preVal
+			nodeList.PushBack(node)
+			preVal = node.Val
+			node = node.Left
+		} else {
+			node = nodeList.Remove(nodeList.Back()).(*TreeNode)
+			preVal = node.Val
+			node = node.Right
+		}
+	}
+	targetPrefix := getPrefixNode(statMap, target.Val)
+	tpLen := len(targetPrefix)
+	var retArr []int
+	for k := range statMap {
+		var commonLen int
+		localPrefix := getPrefixNode(statMap, k)
+		lpLen := len(localPrefix)
+		for commonLen = 0; commonLen < tpLen && commonLen < lpLen; commonLen++ {
+			if targetPrefix[commonLen] != localPrefix[commonLen] {
+				break
+			}
+		}
+		if tpLen+lpLen-commonLen*2 == K {
+			retArr = append(retArr, k)
+		}
+	}
+	return retArr
 }
 
 //https://leetcode-cn.com/contest/weekly-contest-91/problems/lemonade-change/
