@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"container/list"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
+	"math"
 )
 
 //https://leetcode-cn.com/contest/weekly-contest-91/problems/shortest-subarray-with-sum-at-least-k/
@@ -16,7 +19,7 @@ func shortestSubarray(A []int, K int) int {
 	}
 	retVal := -1
 	queue := list.New()
-	//��0��ʼ������ά��˫����д洢������Ϊ��ʼԪ�ص�ǰһλ�����±꣬ÿ�α������У������ڴ���Сֵ��ͬʱɾ����������Ƚϵ�Ԫ�أ���ֵ�϶�������Ϊ��ʼֵ�ģ�
+	//从0开始建立，维护双向队列存储可以作为开始元素的前一位数的下标，每次便利队列，更新期待最小值，同时删除后续无须比较的元素（负值肯定不会作为开始值的）
 	for i := 0; i <= m; i++ {
 		for queue.Len() > 0 {
 			index := queue.Front().Value.(int)
@@ -95,7 +98,7 @@ func getSum(a int, b int) int {
 
 //https://leetcode-cn.com/contest/weekly-contest-91/problems/all-nodes-distance-k-in-binary-tree/
 
-//ͨ�����鹹��������
+//通过数组构建二叉树
 func buildTree(treeArr []int) []TreeNode {
 	treeArrLen := len(treeArr)
 	tree := make([]TreeNode, len(treeArr))
@@ -298,6 +301,14 @@ func max(x int, y int) int {
 	}
 }
 
+func min(x int, y int) int {
+	if x < y {
+		return x
+	} else {
+		return y
+	}
+}
+
 //issue: https://leetcode-cn.com/problems/largest-divisible-subset/description/
 func largestDivisibleSubset(nums []int) []int {
 	var numLen = len(nums)
@@ -367,11 +378,11 @@ func arrayNesting(nums []int) int {
 //"dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
 //dir
 //	subdir1
-//		file1.ext
-//		subsubdir1
+//	file1.ext
+//	subsubdir1
 //	subdir2
-//		subsubdir2
-//			file2.ext
+//	subsubdir2
+//	file2.ext
 func lengthLongestPath(input string) int {
 	maxLen := 0
 	arr := make([]int, 10)
@@ -458,52 +469,806 @@ func lastRemainingFlag(n int, flag bool) int {
 	return v
 }
 
+//https://leetcode-cn.com/problems/super-pow/
+func superPow(a int, b []int) int {
+	v := a % 1337
+	if v <= 1 {
+		return v
+	}
+	n := len(b)
+	y := v ^ b[n-1]
+	for i := n - 2; i >= 0; i -= 1 {
+		y *= (v ^ b[i]) * (v ^ 10)
+	}
+	return y % 1337
+}
+
+func powMod(v int, n int) int {
+	ret := 1
+	for i := 0; i < n; i++ {
+		ret = ret * v % 1337
+	}
+	return ret
+}
+
+//https://leetcode-cn.com/problems/range-sum-query-2d-immutable/
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * obj := Constructor(matrix);
+ * param_1 := obj.SumRegion(row1,col1,row2,col2);
+ */
+type NumMatrix struct {
+	Matrix [][]int
+}
+
+func NumMatrixConstructor(matrix [][]int) NumMatrix {
+	row := len(matrix)
+	if row > 0 {
+		col := len(matrix[0])
+		if col > 0 {
+			for i := 0; i < row; i += 1 {
+				val := matrix[i][0]
+				for j := 1; j < col; j += 1 {
+					matrix[i][j] += val
+					val = matrix[i][j]
+				}
+			}
+			for j := 0; j < col; j += 1 {
+				val := matrix[0][j]
+				for i := 1; i < row; i += 1 {
+					matrix[i][j] += val
+					val = matrix[i][j]
+				}
+			}
+		}
+	}
+	m := NumMatrix{
+		Matrix: matrix,
+	}
+	return m
+}
+
+func (this *NumMatrix) SumRegion(row1 int, col1 int, row2 int, col2 int) int {
+	row := len(this.Matrix)
+	if row == 0 {
+		return 0
+	} else if row2 >= row {
+		row2 = row - 1
+	}
+	col := len(this.Matrix[0])
+	if col == 0 {
+		return 0
+	}
+	if col2 >= col {
+		col2 = col - 1
+	}
+	row1 -= 1
+	col1 -= 1
+	val := 0
+	if row1 >= 0 {
+		val += this.Matrix[row1][col2]
+	}
+	if col1 >= 0 {
+		val += this.Matrix[row2][col1]
+	}
+	if row1 >= 0 && col1 >= 0 {
+		val -= this.Matrix[row1][col1]
+	}
+	return this.Matrix[row2][col2] - val
+}
+
+//https://leetcode-cn.com/problems/linked-list-cycle-ii/
+//Floyd 算法: 当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生什么？在某一个时刻，跑得快的人一定会从后面赶上跑得慢的人
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+type Node struct {
+	Value interface{}
+	Next  *Node
+}
+
+type Stack struct {
+	topNode *Node
+}
+
+func (s *Stack) push(value interface{}) {
+	s.topNode = &Node{
+		Value: value,
+		Next:  s.topNode,
+	}
+}
+
+func (s *Stack) top() interface{} {
+	if s.topNode == nil {
+		return nil
+	} else {
+		return s.topNode.Value
+	}
+}
+
+func (s *Stack) pop() interface{} {
+	if s.topNode == nil {
+		return nil
+	} else {
+		node := s.topNode
+		s.topNode, node.Next = s.topNode.Next, nil
+		return node.Value
+	}
+}
+
+func (s *Stack) empty() bool {
+	return s.topNode == nil
+}
+
+func linkPrint(head *ListNode) {
+	fmt.Printf("%d", head.Val)
+	for head = head.Next; head != nil; head = head.Next {
+		fmt.Printf(", %d", head.Val)
+	}
+	fmt.Println()
+}
+
+func detectCycle(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	slow, fast := head, head
+	for {
+		fast = fast.Next
+		if fast == nil || fast.Next == nil {
+			return nil
+		}
+		fast = fast.Next
+		slow = slow.Next
+		if fast != slow {
+			break
+		}
+	}
+	slow = head
+	for fast != slow {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	return fast
+}
+
+//https://leetcode-cn.com/problems/lru-cache/
+//["LRUCache","get","put","get","put","put","get","get"]
+//[[2],[2],[2,6],[1],[1,5],[1,2],[1],[2]]
+//[null,-1,null,-1,null,null,2,6]
+type LinkNode struct {
+	Val  int
+	Key  int
+	Prev *LinkNode
+	Next *LinkNode
+}
+
+type LRUCache struct {
+	Kv       map[int]*LinkNode
+	Capacity int
+	Tail     *LinkNode
+	Head     *LinkNode
+}
+
+func LRUCacheConstructor(capacity int) LRUCache {
+	kv := make(map[int]*LinkNode, capacity)
+	cache := LRUCache{
+		Kv:       kv,
+		Capacity: capacity,
+		Head:     &LinkNode{},
+		Tail:     &LinkNode{},
+	}
+	cache.Head.Next = cache.Tail
+	cache.Tail.Prev = cache.Head
+	return cache
+}
+
+func (p *LRUCache) appendTail(node *LinkNode) {
+	oldLast := p.Tail.Prev
+	if oldLast == nil {
+		p.Tail.Prev = node
+		node.Prev = p.Head
+		node.Next = p.Tail
+		p.Head.Next = node
+	} else if oldLast == node {
+		return
+	} else {
+		if node.Prev != nil {
+			node.Prev.Next = node.Next
+			node.Next.Prev = node.Prev
+		}
+		oldLast.Next = node
+		node.Prev = oldLast
+		node.Next = p.Tail
+		p.Tail.Prev = node
+	}
+}
+
+func (p *LRUCache) Get(key int) int {
+	node := p.Kv[key]
+	if node == nil {
+		return -1
+	}
+	p.appendTail(node)
+	return node.Val
+}
+
+func (p *LRUCache) Put(key int, value int) {
+	if p.Capacity <= 0 {
+		return
+	}
+	node := p.Kv[key]
+	if node == nil {
+		for len(p.Kv) >= p.Capacity {
+			delete(p.Kv, p.Head.Next.Key)
+			p.Head.Next = p.Head.Next.Next
+			p.Head.Next.Prev = p.Head
+		}
+		node = &LinkNode{
+			Val: value,
+			Key: key,
+		}
+		p.Kv[key] = node
+	} else {
+		node.Val = value
+	}
+	p.appendTail(node)
+}
+
+//https://leetcode-cn.com/problems/sort-list/
+//[4,19,14,5,-3,1,8,5,11,15]
+func sortList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	if head.Next.Next == nil {
+		if head.Val > head.Next.Val {
+			head, head.Next, head.Next.Next = head.Next, nil, head
+		}
+		return head
+	}
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+	}
+	fast, slow.Next = slow.Next, nil
+	return linkMerge(sortList(head), sortList(fast))
+}
+
+func linkMerge(lp *ListNode, rp *ListNode) *ListNode {
+	head := &ListNode{}
+	node := head
+	for l, r := lp, rp; node != nil; node = node.Next {
+		if l == nil {
+			node.Next = r
+			break
+		} else if r == nil {
+			node.Next = l
+			break
+		} else if l.Val <= r.Val {
+			node.Next, l = l, l.Next
+		} else {
+			node.Next, r = r, r.Next
+		}
+	}
+	return head.Next
+}
+
+//https://leetcode-cn.com/problems/maximum-product-subarray/
+func maxProduct(nums []int) int {
+	res, up, down := nums[0], nums[0], nums[0]
+	n := len(nums)
+	for i := 1; i < n; i++ {
+		val := nums[i]
+		if val > 0 {
+			up, down = max(up*val, val), min(down*val, val)
+		} else {
+			up, down = max(down*val, val), min(up*val, val)
+		}
+		res = max(res, up)
+	}
+	return res
+}
+
+//https://leetcode-cn.com/problems/number-of-islands/
+func numIslands(grid [][]byte) int {
+	m := len(grid)
+	if m == 0 {
+		return 0
+	}
+	n := len(grid[0])
+	cnt := 0
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == '1' {
+				numIslandsDFS(grid, i, j, m, n)
+				cnt++
+			}
+		}
+	}
+	return cnt
+}
+
+type NumIslandsStackNode struct {
+	x    int
+	y    int
+	Next *NumIslandsStackNode
+}
+
+func numIslandsDFS(grid [][]byte, i int, j int, m int, n int) {
+	top := &NumIslandsStackNode{
+		x: i,
+		y: j,
+	}
+	m, n = m-1, n-1
+	for top != nil {
+		i, j = top.x, top.y
+		grid[i][j] = '0'
+		top, top.Next = top.Next, nil
+		if j > 0 && grid[i][j-1] == '1' {
+			top = &NumIslandsStackNode{x: i, y: j - 1, Next: top}
+		}
+		if i > 0 && grid[i-1][j] == '1' {
+			top = &NumIslandsStackNode{
+				x:    i - 1,
+				y:    j,
+				Next: top,
+			}
+		}
+		if i < m && grid[i+1][j] == '1' {
+			top = &NumIslandsStackNode{
+				x:    i + 1,
+				y:    j,
+				Next: top,
+			}
+		}
+		if j < n && grid[i][j+1] == '1' {
+			top = &NumIslandsStackNode{
+				x:    i,
+				y:    j + 1,
+				Next: top,
+			}
+		}
+	}
+}
+
+//https://leetcode-cn.com/problems/decode-string/
+type DecodeStringStackNode struct {
+	Num    int
+	Prefix string
+	Next   *DecodeStringStackNode
+}
+type DecodeString struct {
+	Num    int
+	Prefix string
+}
+
+func decodeString(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	startNum := -1
+	num := 0
+	top := &DecodeStringStackNode{}
+	for i, c := range s {
+		if c >= '0' && c <= '9' {
+			if startNum == -1 {
+				startNum = i
+			}
+		} else if c == '[' {
+			num, _ = strconv.Atoi(s[startNum:i])
+			startNum = -1
+			top = &DecodeStringStackNode{Num: num, Next: top}
+		} else if c == ']' {
+			str := strings.Repeat(top.Prefix, top.Num)
+			top = top.Next
+			top.Prefix += str
+		} else {
+			top.Prefix += string(c)
+		}
+	}
+	return top.Prefix
+}
+
+//https://leetcode-cn.com/problems/3sum/
+func threeSum(nums []int) [][]int {
+	sort.Ints(nums)
+	retArray := make([][]int, 0, 10)
+	retMap := make(map[string]bool, 10)
+	for i, j := 0, len(nums)-1; i+1 < j && nums[i] <= 0 && nums[j] >= 0; {
+		val := nums[i] + nums[i+1] + nums[j]
+		if val == 0 {
+			//OK了
+			strKey := fmt.Sprintf("%d-%d", nums[i], nums[i+1])
+			_, ok := retMap[strKey]
+			if !ok {
+				retMap[strKey] = true
+				retArray = append(retArray, []int{nums[i], nums[i+1], nums[j]})
+			}
+		} else if val > 0 {
+			j -= 1
+			continue
+		} else if nums[i]+nums[j-1]+nums[j] < 0 {
+			i += 1
+			continue
+		}
+		r := j
+		for k := i + 2; k < r && nums[r] >= 0; {
+			val = nums[i] + nums[k] + nums[r]
+			if val == 0 {
+				strKey := fmt.Sprintf("%d-%d", nums[i], nums[k])
+				_, ok := retMap[strKey]
+				if !ok {
+					retMap[strKey] = true
+					retArray = append(retArray, []int{nums[i], nums[k], nums[r]})
+				}
+				k += 1
+			} else if val > 0 {
+				r -= 1
+			} else {
+				k += 1
+			}
+		}
+		i += 1
+	}
+	return retArray
+}
+
+//https://leetcode-cn.com/problems/01-matrix/
+func updateMatrix(matrix [][]int) [][]int {
+	m, n := len(matrix), len(matrix[0])
+	dis := make([][]int, m)
+	for i := 0; i < m; i += 1 {
+		dis[i] = make([]int, n)
+		for j := 0; j < n; j += 1 {
+			if matrix[i][j] == 0 {
+				dis[i][j] = 0
+			} else {
+
+				dis[i][j] = math.MaxInt32 - 10000
+			}
+		}
+	}
+	for i := 0; i < m; i += 1 {
+		for j := 0; j < n; j += 1 {
+			if matrix[i][j] == 0 {
+				dis[i][j] = 0
+			} else {
+				if i > 0 {
+					dis[i][j] = min(dis[i-1][j]+1, dis[i][j])
+				}
+				if j > 0 {
+					dis[i][j] = min(dis[i][j-1]+1, dis[i][j])
+				}
+			}
+		}
+	}
+	m, n = m-1, n-1
+	for i := m; i >= 0; i -= 1 {
+		for j := n; j >= 0; j -= 1 {
+			if i < m {
+				dis[i][j] = min(dis[i+1][j]+1, dis[i][j])
+			}
+			if j < n {
+				dis[i][j] = min(dis[i][j+1]+1, dis[i][j])
+			}
+		}
+	}
+	return dis
+}
+
+type RichNode struct {
+	i     int
+	quite int
+	child *list.List
+}
+
+//https://leetcode-cn.com/problems/loud-and-rich/
+func loudAndRich(richer [][]int, quiet []int) []int {
+	n := len(quiet)
+	answer := make([]int, n)
+	tree := make([]*RichNode, n)
+	for _, r := range richer {
+		if tree[r[1]] == nil {
+			tree[r[1]] = &RichNode{i: r[1], quite: -1, child: list.New()}
+		}
+		if tree[r[0]] == nil {
+			tree[r[0]] = &RichNode{i: r[0], quite: -1, child: list.New()}
+		}
+		tree[r[1]].child.PushFront(tree[r[0]])
+	}
+	for i := 0; i < n; i += 1 {
+		r := tree[i]
+		if r == nil {
+			answer[i] = i
+			continue
+		} else if r.quite == -1 {
+			if r.child.Len() == 0 {
+				r.quite = i
+			} else {
+				r.quite = loudAndRichDnf(r, quiet)
+			}
+		}
+		answer[i] = r.quite
+	}
+	return answer
+}
+
+func loudAndRichDnf(node *RichNode, quiet []int) int {
+	if node.quite >= 0 {
+		return node.quite
+	} else if node.child.Len() == 0 {
+		return node.i
+	} else {
+		index := -1
+		for r := node.child.Front(); r != nil; r = r.Next() {
+			c := r.Value.(*RichNode)
+			c.quite = loudAndRichDnf(c, quiet)
+			if index == -1 || quiet[index] > quiet[c.quite] {
+				index = c.quite
+			}
+		}
+		if quiet[index] > quiet[node.i] {
+			return node.i
+		} else {
+			return index
+		}
+	}
+}
+
+//https://leetcode-cn.com/problems/string-to-integer-atoi/
+func myAtoi(str string) int {
+	const maxInt = 2147483647
+	startIndex, negative := -1, -1
+	for i := 0; i < len(str); i += 1 {
+		c := str[i]
+		if c >= '0' && c <= '9' {
+			startIndex = i
+			if c == '0' {
+				continue
+			}
+			break
+		} else if c == '-' || c == '+' {
+			if negative != -1 || startIndex != -1 {
+				return 0
+			}
+			if c == '-' {
+				negative = 1
+			} else {
+				negative = 0
+			}
+		} else if negative != -1 || c != ' ' || startIndex != -1 {
+			return 0
+		}
+	}
+	if startIndex == -1 {
+		return 0
+	}
+	if negative == -1 {
+		negative = 0
+	}
+	//-2147483648
+	val, modeVal, maxVal, maxModeVal := 0, (int)(str[startIndex]-'0'), maxInt/10, maxInt%10+negative
+	if startIndex+1 < len(str) {
+		for _, c := range str[startIndex+1:] {
+			if c < '0' || c > '9' {
+				break
+			}
+			val = val*10 + modeVal
+			modeVal = int(uint8(c - '0'))
+			//越值检查
+			if val > maxVal || (val == maxVal && modeVal >= maxModeVal) {
+				if negative == 1 {
+					return -maxInt - 1
+				} else {
+					return maxInt
+				}
+			}
+		}
+	}
+	if negative == 1 {
+		return 0 - val*10 - modeVal
+	} else {
+		return val*10 + modeVal
+	}
+}
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ * https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+ */
+func swapPairs(head *ListNode) *ListNode {
+	var pre *ListNode
+	for cur := head; cur != nil && cur.Next != nil; pre, cur = cur, cur.Next {
+		tmp := cur.Next
+		cur.Next = tmp.Next
+		tmp.Next = cur
+		if pre == nil {
+			head = tmp
+		} else {
+			pre.Next = tmp
+		}
+	}
+	return head
+}
+
+/**
+ *	https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+ */
+func searchRange(nums []int, target int) []int {
+	from, to, t := 0, len(nums)-1, -1
+	for from <= to {
+		mid := (to + from) >> 1
+		if target == nums[mid] {
+			t = mid
+			break
+		} else if target > nums[mid] {
+			from = mid + 1
+		} else {
+			to = mid - 1
+		}
+	}
+	if t == -1 {
+		return []int{-1, -1}
+	}
+	start, end := t, t
+	for from < start {
+		mid := (start + from) >> 1
+		if target == nums[mid] {
+			start = mid
+		} else {
+			from = mid + 1
+		}
+	}
+	for end < to {
+		mid := (end + to + 1) >> 1
+		if target == nums[mid] {
+			end = mid
+		} else {
+			to = mid - 1
+		}
+	}
+	return []int{start, end}
+}
+
+//https://leetcode-cn.com/problems/integer-to-roman/
+func intToRoman(num int) string {
+	var buffer bytes.Buffer
+	sy := []rune{'I', 'V', 'X', 'L', 'C', 'D', 'M', ' ', ' '}
+	for i := 0; num > 0; num, i = num/10, i+1 {
+		v := num % 10
+		m, n := v%5, v/5
+		f, s, t := sy[2*i], sy[2*i+1], sy[2*i+2]
+		if m == 4 {
+			if n == 1 {
+				buffer.WriteRune(t)
+				buffer.WriteRune(f)
+			} else {
+				buffer.WriteRune(s)
+				buffer.WriteRune(f)
+			}
+		} else {
+			for j := 0; j < m; j += 1 {
+				buffer.WriteRune(f)
+			}
+			if n == 1 {
+				buffer.WriteRune(s)
+			}
+		}
+	}
+	byteArray := buffer.Bytes()
+	l := len(byteArray)
+	ret := make([]byte, l)
+	for i := l; i > 0; i-- {
+		ret[l-i] = byteArray[i-1]
+	}
+	return string(ret)
+}
+
+//https://leetcode-cn.com/problems/partition-array-into-disjoint-intervals/
+func partitionDisjoint(A []int) int {
+	i, j := 0, len(A)-1
+	l, r := A[0], A[j]
+	for ; i < j; i, j = i+1, j-1 {
+		if l < A[i] {
+			l = A[i]
+		}
+		if r > A[j] {
+			r = A[j]
+		}
+		if l > r {
+			break
+		}
+	}
+	return i + 1
+}
+
 func main() {
-	fmt.Println(getSum(5, 13))
-	fmt.Println(largestDivisibleSubset([]int{546, 649}))
-	fmt.Println(largestDivisibleSubset([]int{832, 33, 531, 416, 335, 298, 365, 352, 582, 936, 366, 305, 930, 530, 97, 349, 71, 295, 840, 108, 299, 804, 925, 627, 953, 571, 658, 732, 429, 136, 563, 462, 666, 330, 796, 315, 695, 500, 896, 982, 217, 200, 912, 98, 297, 612, 169, 943, 628, 593, 959, 904, 219, 240, 857, 789, 897, 940, 569, 384, 502, 382, 401, 184, 716, 230, 29, 963, 211, 597, 515, 122, 163, 86, 215, 105, 889, 842, 49, 847, 267, 87, 954, 407, 245, 975, 719, 746, 709, 471, 281, 238, 186, 510, 618, 149, 73, 214, 663, 194, 260, 825, 631, 474, 519, 668, 329, 718, 765, 947, 156, 353, 490, 962, 679, 560, 59, 387, 31, 692, 976, 568, 201, 273, 159, 730, 819, 418, 906, 801, 892, 672, 559, 866, 389, 675, 812, 744, 164, 737, 57, 195, 115, 933, 158, 909, 598, 359, 853, 314, 983, 11, 395, 153, 781, 301, 838, 625, 704, 256, 351, 996, 225, 644, 521, 509, 674, 417, 272, 622, 937, 723, 632, 331, 228, 412, 181, 435, 469, 157, 368, 524, 38, 132, 325, 420, 127, 731, 771, 604, 505, 634, 67, 374, 894, 3, 448, 878, 686, 641, 316, 207, 76, 363, 795, 235, 770, 446, 820, 493, 177, 816, 615, 410, 117, 944, 829, 190, 831, 289, 516, 964, 170, 134, 671, 885, 682, 119, 402, 82, 485, 901, 375, 68, 858, 739, 56, 974, 683, 884, 815, 872, 715, 104, 290, 348, 588, 834, 788, 472, 466, 867, 550, 779, 65, 802, 459, 440, 870, 753, 608, 808, 623, 642, 44, 437, 865, 758, 540, 506, 691, 958, 854, 546, 39, 595, 369, 504, 63, 311, 722, 441, 786, 899, 338, 651, 874, 946, 811, 848, 939, 284, 824, 309, 653, 133, 514, 460, 678, 54, 399, 759, 468, 61, 480, 783, 266, 900, 400, 237, 403, 534, 213, 914, 473, 198, 380, 373, 288, 154, 844, 535, 409, 249, 285, 168, 69, 345, 647, 851, 846, 264, 102, 246, 106, 648, 576, 212, 438, 981, 987, 379, 360, 667, 95, 172, 101, 580, 891, 385, 747, 161, 927, 361, 818, 657, 171, 342, 232, 734, 714, 362, 425, 475, 28, 41, 551, 142, 131, 51, 229, 9, 607, 326, 522, 687, 792, 845, 665, 358, 91, 720, 155, 565, 99, 26, 650, 539, 780, 589, 950, 935, 372, 227, 424, 750, 833, 554, 841, 552, 60, 757, 430, 916, 140, 790, 426, 776, 96, 199, 923, 806, 949, 755, 711, 659, 911, 611, 310, 774, 265, 880, 690, 706, 761, 286, 255, 756, 204, 444, 478, 601, 529, 669, 241, 784, 566, 528, 208, 270, 511, 236, 271, 378, 58, 453, 467, 233, 250, 567, 296, 932, 989, 367, 626, 35, 162, 887, 572, 603, 564, 797, 280, 406, 970, 689, 408, 431, 638, 489, 85, 50, 357, 803, 47, 555, 793, 422, 763, 110, 869, 861, 253, 320, 538, 347, 405, 769, 64, 875, 630, 537, 328, 553, 166, 948, 303, 160, 800, 507, 920, 922, 90, 693, 636, 17, 455, 183, 210, 856, 762, 656, 174, 873, 579, 176, 688, 640, 1, 938, 902, 341, 740, 581, 427, 111, 972, 443, 22, 791, 304, 574, 575, 725, 477, 700, 817, 381, 479, 248, 121, 411, 547, 182, 871, 599, 203, 13, 224, 541, 724, 178, 775, 388, 4, 251, 321, 52, 88, 100, 279, 614, 839, 84, 151, 735, 40, 752, 773, 376, 77, 476, 708, 396, 988, 961, 24, 231, 445, 609, 952, 965, 986, 414, 451, 881, 42, 257, 32, 334, 130, 596, 527, 94, 333, 317, 244, 960, 710, 852, 862, 421, 81, 37, 452, 274, 187, 268, 520, 491, 778, 18, 743, 620, 145, 72, 370, 118, 748, 633, 997, 436, 143, 573, 495, 180, 34}))
-	fmt.Println(largestDivisibleSubset([]int{1}))
-	fmt.Println(largestDivisibleSubset([]int{1, 2, 3}))
-	fmt.Println(largestDivisibleSubset([]int{1, 2, 4, 8}))
-	s := "ddddddddd"
-	fmt.Println(s + ": " + longestPalindrome(s))
-	s = "dddddddd"
-	fmt.Println(s + ": " + longestPalindrome(s))
-	s = "aaaa"
-	fmt.Println(s + ": " + longestPalindrome(s))
-	s = "cbbd"
-	fmt.Println(s + ": " + longestPalindrome(s))
-	s = "abacdfgdcaba"
-	fmt.Println(s + ": " + longestPalindrome(s))
-	var intArr = []int{12, 22}
-	fmt.Println(findNumberOfLIS(intArr))
-	intArr = []int{1, 3, 9, 5, 4, 7, 6, 8}
-	fmt.Println(findNumberOfLIS(intArr))
-	intArr = []int{2, 2, 2, 2, 2}
-	fmt.Println(findNumberOfLIS(intArr))
-	intArr = []int{1, 2, 4, 3, 5, 4, 7, 2}
-	fmt.Println(findNumberOfLIS(intArr))
-
-	treeArr := []int{3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4}
-	tree := buildTree(treeArr)
-	fmt.Println(distanceK(&tree[0], &tree[1], 2))
-
-	fmt.Println(shortestSubarray([]int{1}, 1))
-	fmt.Println(shortestSubarray([]int{1, 2}, 4))
-	fmt.Println(shortestSubarray([]int{2, -1, 2}, 3))
-	fmt.Println(shortestSubarray([]int{1, -2, 2, -1, 3}, 4))
-
-	s = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
-	fmt.Println(lengthLongestPath(s))
-	fmt.Println('z' - 'a')
-	fmt.Println(titleToNumber("AB"))
-	fmt.Println(titleToNumber("A"))
-	fmt.Println(titleToNumber("ZY"))
-
-	fmt.Println(lastRemaining(4))
-	fmt.Println(lastRemaining(6))
-	fmt.Println(lastRemaining(8))
-	fmt.Println(lastRemaining(16))
-	fmt.Println(lastRemaining(16))
-	fmt.Println(lastRemaining(16))
+	//fmt.Println(searchRange([]int{5, 7, 7, 8, 8, 10}, 8))
+	//stack := Stack{}
+	//stack.push(1)
+	//stack.pop()
+	//val := stack.top()
+	//fmt.Println(val)
+	//fmt.Println(decodeString("3[a2[c]d]2[b]"))
+	//fmt.Println(decodeString("100[leetcode]"))
+	//fmt.Println(numIslands([][]byte{{'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '0', '0', '0'}}))
+	//fmt.Println(numIslands([][]byte{{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}}))
+	//fmt.Println(numIslands([][]byte{{'0', '1', '0', '0', '1', '1', '1', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '1'}, {'1', '0', '1', '0', '0', '1', '1', '0', '0', '1', '0', '1', '0', '1', '0', '1', '1', '0', '0', '0'}, {'0', '1', '0', '0', '0', '1', '1', '1', '1', '0', '0', '0', '0', '0', '1', '1', '1', '1', '0', '1'}, {'1', '1', '0', '0', '0', '1', '1', '0', '0', '0', '1', '1', '1', '0', '0', '1', '0', '1', '1', '0'}, {'0', '1', '0', '1', '1', '0', '1', '0', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '1'}, {'1', '0', '0', '1', '0', '1', '0', '0', '0', '1', '1', '0', '1', '0', '0', '1', '0', '0', '0', '0'}, {'1', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '1'}, {'1', '0', '0', '0', '1', '0', '1', '1', '1', '0', '1', '0', '1', '1', '1', '1', '0', '0', '0', '1'}, {'1', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1'}, {'0', '0', '0', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1', '0'}, {'1', '0', '1', '0', '1', '0', '0', '1', '1', '1', '0', '1', '1', '0', '0', '1', '1', '0', '0', '0'}, {'0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '0'}, {'1', '0', '0', '0', '1', '1', '1', '0', '1', '0', '0', '0', '1', '0', '1', '0', '1', '0', '0', '1'}, {'0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '0', '1', '0', '1', '1', '1', '1', '0', '0', '0'}, {'0', '1', '1', '0', '0', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '1', '0', '1', '0'}, {'1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0', '1', '0', '0', '1', '0', '0', '0', '1'}, {'1', '0', '0', '0', '1', '0', '1', '0', '0', '1', '0', '1', '0', '0', '1', '0', '0', '1', '1', '1'}, {'0', '0', '1', '0', '0', '0', '0', '1', '0', '0', '1', '1', '0', '1', '1', '1', '0', '0', '0', '0'}, {'0', '0', '1', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '0', '1', '0', '0', '0', '1', '1'}, {'1', '0', '0', '0', '1', '0', '1', '1', '1', '0', '0', '1', '0', '1', '0', '1', '1', '0', '0', '0'}}))
+	//fmt.Println(maxProduct([]int{2, 3, -2, 4}))
+	//fmt.Println(maxProduct([]int{-2, 0, -1}))
+	//head := &ListNode{}
+	//pre, node := head, head
+	//for _, val := range []int{4, 19, 14, 5, -3, 1, 8, 5, 11, 15} {
+	//	node.Val = val
+	//	node.Next = &ListNode{}
+	//	pre = node
+	//	node = node.Next
+	//}
+	//pre.Next = nil
+	//fmt.Printf("sort before: ")
+	//linkPrint(head)
+	//head = sortList(head)
+	//fmt.Printf("sort after: ")
+	//linkPrint(head)
+	//m := make(map[int]int, 3)
+	//m[1] = 2
+	//fmt.Printf("len: %d, m: %+v\n", len(m), m)
+	//fmt.Println(getSum(5, 13))
+	//fmt.Println(largestDivisibleSubset([]int{546, 649}))
+	//fmt.Println(largestDivisibleSubset([]int{832, 33, 531, 416, 335, 298, 365, 352, 582, 936, 366, 305, 930, 530, 97, 349, 71, 295, 840, 108, 299, 804, 925, 627, 953, 571, 658, 732, 429, 136, 563, 462, 666, 330, 796, 315, 695, 500, 896, 982, 217, 200, 912, 98, 297, 612, 169, 943, 628, 593, 959, 904, 219, 240, 857, 789, 897, 940, 569, 384, 502, 382, 401, 184, 716, 230, 29, 963, 211, 597, 515, 122, 163, 86, 215, 105, 889, 842, 49, 847, 267, 87, 954, 407, 245, 975, 719, 746, 709, 471, 281, 238, 186, 510, 618, 149, 73, 214, 663, 194, 260, 825, 631, 474, 519, 668, 329, 718, 765, 947, 156, 353, 490, 962, 679, 560, 59, 387, 31, 692, 976, 568, 201, 273, 159, 730, 819, 418, 906, 801, 892, 672, 559, 866, 389, 675, 812, 744, 164, 737, 57, 195, 115, 933, 158, 909, 598, 359, 853, 314, 983, 11, 395, 153, 781, 301, 838, 625, 704, 256, 351, 996, 225, 644, 521, 509, 674, 417, 272, 622, 937, 723, 632, 331, 228, 412, 181, 435, 469, 157, 368, 524, 38, 132, 325, 420, 127, 731, 771, 604, 505, 634, 67, 374, 894, 3, 448, 878, 686, 641, 316, 207, 76, 363, 795, 235, 770, 446, 820, 493, 177, 816, 615, 410, 117, 944, 829, 190, 831, 289, 516, 964, 170, 134, 671, 885, 682, 119, 402, 82, 485, 901, 375, 68, 858, 739, 56, 974, 683, 884, 815, 872, 715, 104, 290, 348, 588, 834, 788, 472, 466, 867, 550, 779, 65, 802, 459, 440, 870, 753, 608, 808, 623, 642, 44, 437, 865, 758, 540, 506, 691, 958, 854, 546, 39, 595, 369, 504, 63, 311, 722, 441, 786, 899, 338, 651, 874, 946, 811, 848, 939, 284, 824, 309, 653, 133, 514, 460, 678, 54, 399, 759, 468, 61, 480, 783, 266, 900, 400, 237, 403, 534, 213, 914, 473, 198, 380, 373, 288, 154, 844, 535, 409, 249, 285, 168, 69, 345, 647, 851, 846, 264, 102, 246, 106, 648, 576, 212, 438, 981, 987, 379, 360, 667, 95, 172, 101, 580, 891, 385, 747, 161, 927, 361, 818, 657, 171, 342, 232, 734, 714, 362, 425, 475, 28, 41, 551, 142, 131, 51, 229, 9, 607, 326, 522, 687, 792, 845, 665, 358, 91, 720, 155, 565, 99, 26, 650, 539, 780, 589, 950, 935, 372, 227, 424, 750, 833, 554, 841, 552, 60, 757, 430, 916, 140, 790, 426, 776, 96, 199, 923, 806, 949, 755, 711, 659, 911, 611, 310, 774, 265, 880, 690, 706, 761, 286, 255, 756, 204, 444, 478, 601, 529, 669, 241, 784, 566, 528, 208, 270, 511, 236, 271, 378, 58, 453, 467, 233, 250, 567, 296, 932, 989, 367, 626, 35, 162, 887, 572, 603, 564, 797, 280, 406, 970, 689, 408, 431, 638, 489, 85, 50, 357, 803, 47, 555, 793, 422, 763, 110, 869, 861, 253, 320, 538, 347, 405, 769, 64, 875, 630, 537, 328, 553, 166, 948, 303, 160, 800, 507, 920, 922, 90, 693, 636, 17, 455, 183, 210, 856, 762, 656, 174, 873, 579, 176, 688, 640, 1, 938, 902, 341, 740, 581, 427, 111, 972, 443, 22, 791, 304, 574, 575, 725, 477, 700, 817, 381, 479, 248, 121, 411, 547, 182, 871, 599, 203, 13, 224, 541, 724, 178, 775, 388, 4, 251, 321, 52, 88, 100, 279, 614, 839, 84, 151, 735, 40, 752, 773, 376, 77, 476, 708, 396, 988, 961, 24, 231, 445, 609, 952, 965, 986, 414, 451, 881, 42, 257, 32, 334, 130, 596, 527, 94, 333, 317, 244, 960, 710, 852, 862, 421, 81, 37, 452, 274, 187, 268, 520, 491, 778, 18, 743, 620, 145, 72, 370, 118, 748, 633, 997, 436, 143, 573, 495, 180, 34}))
+	//fmt.Println(largestDivisibleSubset([]int{1}))
+	//fmt.Println(largestDivisibleSubset([]int{1, 2, 3}))
+	//fmt.Println(largestDivisibleSubset([]int{1, 2, 4, 8}))
+	//s := "ddddddddd"
+	//fmt.Println(s + ": " + longestPalindrome(s))
+	//s = "dddddddd"
+	//fmt.Println(s + ": " + longestPalindrome(s))
+	//s = "aaaa"
+	//fmt.Println(s + ": " + longestPalindrome(s))
+	//s = "cbbd"
+	//fmt.Println(s + ": " + longestPalindrome(s))
+	//s = "abacdfgdcaba"
+	//fmt.Println(s + ": " + longestPalindrome(s))
+	//var intArr = []int{12, 22}
+	//fmt.Println(findNumberOfLIS(intArr))
+	//intArr = []int{1, 3, 9, 5, 4, 7, 6, 8}
+	//fmt.Println(findNumberOfLIS(intArr))
+	//intArr = []int{2, 2, 2, 2, 2}
+	//fmt.Println(findNumberOfLIS(intArr))
+	//intArr = []int{1, 2, 4, 3, 5, 4, 7, 2}
+	//fmt.Println(findNumberOfLIS(intArr))
+	//
+	//treeArr := []int{3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4}
+	//tree := buildTree(treeArr)
+	//fmt.Println(distanceK(&tree[0], &tree[1], 2))
+	//
+	//fmt.Println(shortestSubarray([]int{1}, 1))
+	//fmt.Println(shortestSubarray([]int{1, 2}, 4))
+	//fmt.Println(shortestSubarray([]int{2, -1, 2}, 3))
+	//fmt.Println(shortestSubarray([]int{1, -2, 2, -1, 3}, 4))
+	//
+	//s = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+	//fmt.Println(lengthLongestPath(s))
+	//fmt.Println('z' - 'a')
+	//fmt.Println(titleToNumber("AB"))
+	//fmt.Println(titleToNumber("A"))
+	//fmt.Println(titleToNumber("ZY"))
+	//
+	//fmt.Println(lastRemaining(4))
+	//fmt.Println(lastRemaining(6))
+	//fmt.Println(lastRemaining(8))
+	//fmt.Println(lastRemaining(16))
+	//fmt.Println(lastRemaining(16))
+	//fmt.Println(lastRemaining(16))
+	//fmt.Println("superPow")
+	//fmt.Println(superPow(2, []int{1, 2, 0}))
+	//fmt.Println(loudAndRich([][]int{{1, 0}, {2, 1}, {3, 1}, {3, 7}, {4, 3}, {5, 3}, {6, 3}}, []int{3, 2, 5, 4, 6, 1, 7, 0}))
 }
