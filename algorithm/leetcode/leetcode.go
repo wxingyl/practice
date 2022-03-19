@@ -1,6 +1,10 @@
 package main
 
-import "strconv"
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
 
 //https://leetcode-cn.com/problems/count-number-of-maximum-bitwise-or-subsets/
 func countMaxOrSubsets(nums []int) int {
@@ -63,4 +67,39 @@ func tree2str(root *TreeNode) string {
 		dfs(root)
 	}
 	return string(bs)
+}
+
+//https://leetcode-cn.com/problems/word-break-ii/
+func wordBreak(s string, wordDict []string) (ret []string) {
+	n, m := len(s), map[string]bool{}
+	for _, w := range wordDict {
+		m[w] = true
+	}
+	var arr []string
+	var bfs func(i int)
+	bfs = func(i int) {
+		if i >= n {
+			return
+		}
+		for j := i + 1; j <= n; j++ {
+			w := s[i:j]
+			if m[w] {
+				arr = append(arr, w)
+				if j == n {
+					ret = append(ret, strings.Join(arr, " "))
+				} else {
+					bfs(j)
+				}
+				arr = arr[:len(arr)-1]
+			}
+		}
+	}
+	bfs(0)
+	sort.Strings(ret)
+	return
+}
+
+// https://leetcode-cn.com/problems/max-points-on-a-line/
+func maxPoints(points [][]int) int {
+	return -1
 }
