@@ -138,12 +138,6 @@ func buildTree(treeArr []int) []TreeNode {
 	return tree
 }
 
-//Definition for a binary tree node.
-type TreeNode struct {
-	Val         int
-	Left, Right *TreeNode
-}
-
 func getPrefixNode(statMap map[int]int, val int) []int {
 	prefix := []int{val}
 	for statMap[val] != -1 {
@@ -291,22 +285,6 @@ func longestPalindrome(s string) string {
 		}
 	}
 	return s[start : end+1]
-}
-
-func max(x int, y int) int {
-	if x < y {
-		return y
-	} else {
-		return x
-	}
-}
-
-func min(x int, y int) int {
-	if x < y {
-		return x
-	} else {
-		return y
-	}
 }
 
 //issue: https://leetcode-cn.com/problems/largest-divisible-subset/description/
