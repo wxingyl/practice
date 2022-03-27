@@ -148,3 +148,25 @@ func solve(board [][]byte) {
 		}
 	}
 }
+
+func missingRolls(rolls []int, mean int, n int) []int {
+	m := len(rolls)
+	sv := mean * (m + n)
+	for _, v := range rolls {
+		sv -= v
+	}
+	if sv < n || sv > 6*n {
+		return nil
+	}
+	ret := make([]int, n)
+	for sv >= n {
+		for i := 0; i < n; i++ {
+			ret[i] += 1
+		}
+		sv -= n
+	}
+	for i := 0; i < sv; i++ {
+		ret[i] += 1
+	}
+	return ret
+}
