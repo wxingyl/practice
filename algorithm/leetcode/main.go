@@ -170,3 +170,131 @@ func missingRolls(rolls []int, mean int, n int) []int {
 	}
 	return ret
 }
+
+//https://leetcode-cn.com/problems/binary-number-with-alternating-bits/
+func hasAlternatingBits(n int) bool {
+	a := n ^ (n >> 1) + 1
+	return a&(a-1) == 0
+}
+
+//https://leetcode-cn.com/problems/find-the-difference-of-two-arrays/
+func findDifference(nums1 []int, nums2 []int) [][]int {
+	m1, m2 := map[int]bool{}, map[int]bool{}
+	for _, v := range nums1 {
+		m1[v] = true
+	}
+	for _, v := range nums2 {
+		m2[v] = true
+	}
+	var r1, r2 []int
+	for _, v := range nums1 {
+		if !m2[v] {
+			r1 = append(r1, v)
+			m2[v] = true
+		}
+	}
+	for _, v := range nums2 {
+		if !m1[v] {
+			r2 = append(r2, v)
+			m1[v] = true
+		}
+	}
+	return [][]int{r1, r2}
+}
+
+// https://leetcode-cn.com/problems/minimum-deletions-to-make-array-beautiful/
+func minDeletion(nums []int) int {
+	n := len(nums)
+	c := 0
+	for i := 0; i < n; {
+		j := i + 1
+		for ; j < n && nums[i] == nums[j]; j++ {
+			c++
+		}
+		if j == n {
+			c++
+			break
+		}
+		i = j + 1
+	}
+	return c
+}
+
+//https://leetcode-cn.com/problems/find-palindrome-with-fixed-length/
+func kthPalindrome(queries []int, intLength int) []int64 {
+	// ret := make([]int64, len(queries))
+	// n := intLength >> 1
+	// p10Val := int(math.Pow10(n))
+	// stageMaxCnt := p10Val - p10Val/10
+	// bs := make([]byte, intLength)
+	// if intLength%2 == 1 {
+	// 	maxCnt := stageMaxCnt * 10
+	// 	for i, q := range queries {
+	// 		if q > maxCnt {
+	// 			ret[i] = -1
+	// 			continue
+	// 		}
+	// 		cnt := q % stageMaxCnt
+	// 		c := (q / stageMaxCnt)
+	// 		if cnt == 0 && c > 0 {
+	// 			c--
+	// 			cnt = stageMaxCnt
+	// 		}
+	// 		bs[n] = byte('0' + c)
+	// 		cnt += (cnt - 1) / 9
+	// 		s := strconv.Itoa(cnt)
+	// 		for j, sl := 1, n-len(s); j <= n; j++ {
+	// 			if j > sl {
+	// 				bs[n-j], bs[n+j] = s[j-sl-1], s[j-sl-1]
+	// 			} else {
+	// 				bs[n-j], bs[n+j] = '0', '0'
+	// 			}
+	// 		}
+	// 		ret[i], _ = strconv.ParseInt(string(bs), 10, 0)
+	// 	}
+	// } else {
+	// 	for i, q := range queries {
+	// 		if q > stageMaxCnt {
+	// 			ret[i] = -1
+	// 			continue
+	// 		}
+	// 		q += (q - 1) / 9
+	// 		s := strconv.Itoa(q)
+	// 		for j, sl := 1, n-len(s); j <= n; j++ {
+	// 			if j > sl {
+	// 				bs[n-j], bs[n+j] = s[j-sl-1], s[j-sl-1]
+	// 			} else {
+	// 				bs[n-j], bs[n+j] = '0', '0'
+	// 			}
+	// 		}
+	// 		ret[i], _ = strconv.ParseInt(string(bs), 10, 0)
+	// 	}
+	// }
+	// return ret
+	return nil
+}
+
+// https://leetcode-cn.com/problems/maximize-the-confusion-of-an-exam/
+func maxConsecutiveAnswers(answerKey string, k int) int {
+	n := len(answerKey)
+	if k >= n>>1 {
+		return n
+	}
+	find := func(t byte) int {
+		ret, si, kv := 0, 0, 0
+		for i, c := range answerKey {
+			if byte(c) != t {
+				kv++
+				for kv > k {
+					if answerKey[si] != t {
+						kv--
+					}
+					si++
+				}
+			}
+			ret = max(ret, i-si+1)
+		}
+		return ret
+	}
+	return max(find('F'), find('T'))
+}
