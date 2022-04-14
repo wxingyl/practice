@@ -288,5 +288,153 @@ func convertTime(current string, correct string) int {
 
 // https://leetcode-cn.com/problems/find-players-with-zero-or-one-losses/
 func findWinners(matches [][]int) [][]int {
-	return nil
+	m := map[int][]int{}
+	for _, v := range matches {
+		a, ok := m[v[0]]
+		if ok {
+			a[0]++
+		} else {
+			m[v[0]] = []int{1, 0}
+		}
+		a, ok = m[v[1]]
+		if ok {
+			a[1]++
+		} else {
+			m[v[1]] = []int{0, 1}
+		}
+	}
+	var allWin, lostOne []int
+	for k, v := range m {
+		if v[1] == 0 {
+			allWin = append(allWin, k)
+		}
+		if v[1] == 1 {
+			lostOne = append(lostOne, k)
+		}
+	}
+	sort.Ints(allWin)
+	sort.Ints(lostOne)
+	return [][]int{allWin, lostOne}
+}
+
+//https://leetcode-cn.com/problems/maximum-candies-allocated-to-k-children/
+func maximumCandies(candies []int, k int64) int {
+	var sumVal int64
+	for _, v := range candies {
+		sumVal += int64(v)
+	}
+	if sumVal < k {
+		return 0
+	} else if sumVal < 2*k {
+		return 1
+	}
+	pv := int(sumVal / k)
+	sort.Ints(candies)
+	var sv int64
+	for _, v := range candies {
+		if v >= pv {
+			break
+		}
+		sv += int64(v)
+	}
+	return pv
+}
+
+//https://leetcode-cn.com/problems/unique-morse-code-words/
+func uniqueMorseRepresentations(words []string) int {
+	index := []string{".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}
+	m := map[string]bool{}
+	for _, w := range words {
+		sb := strings.Builder{}
+		for _, c := range w {
+			sb.WriteString(index[c-'a'])
+		}
+		m[sb.String()] = true
+	}
+	return len(m)
+}
+
+//https://leetcode-cn.com/problems/largest-number-after-digit-swaps-by-parity/
+func largestInteger(num int) int {
+	var bs []int
+	for v := num; v > 0; v /= 10 {
+		bs = append(bs, v%10)
+	}
+	for i := len(bs) - 1; i >= 0; i-- {
+		for j := i - 1; j >= 0; j-- {
+			if (bs[i]^bs[j])&1 == 0 && bs[i] < bs[j] {
+				bs[i], bs[j] = bs[j], bs[i]
+			}
+		}
+	}
+	v := 0
+	for i := len(bs) - 1; i >= 0; i-- {
+		v = 10*v + bs[i]
+	}
+	return v
+}
+
+// https://leetcode-cn.com/problems/minimize-result-by-adding-parentheses-to-expression/
+func minimizeResult(expression string) string {
+	i := 1
+	for ; expression[i] != '+'; i++ {
+	}
+	convert := func(s string) int {
+		if len(s) == 0 {
+			return 1
+		} else {
+			v, _ := strconv.Atoi(s)
+			return v
+		}
+	}
+	a, b := expression[:i], expression[i+1:]
+	an, bn := len(a), len(b)
+	v := -1
+	var s string
+	for i := 0; i < an; i++ {
+		v1, v2 := convert(a[:i]), convert(a[i:])
+		for j := 1; j <= bn; j++ {
+			v3, v4 := convert(b[:j]), convert(b[j:])
+			tv := v1 * (v2 + v3) * v4
+			if v == -1 || tv < v {
+				s = a[:i] + "(" + a[i:] + "+" + b[:j] + ")" + b[j:]
+				v = tv
+			}
+		}
+	}
+	return s
+}
+
+// https://leetcode-cn.com/contest/cmbchina-2022spring/problems/fWcPGC/
+func deleteText(article string, index int) string {
+	if article[index] == ' ' {
+		return article
+	} else {
+		n := len(article)
+		var l, r string
+		for i := index + 1; i < n; i++ {
+			if article[i] == ' ' {
+				r = article[i+1:]
+				break
+			}
+		}
+		for i := index - 1; i >= 0; i-- {
+			if article[i] == ' ' {
+				l = article[:i]
+				break
+			}
+		}
+		if len(l) == 0 {
+			return r
+		} else if len(r) == 0 {
+			return l
+		} else {
+			return l + " " + r
+		}
+	}
+}
+
+// https://leetcode-cn.com/contest/cmbchina-2022spring/problems/ReWLAw/
+func numFlowers(roads [][]int) int {
+	return 0
 }
