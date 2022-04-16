@@ -436,5 +436,148 @@ func deleteText(article string, index int) string {
 
 // https://leetcode-cn.com/contest/cmbchina-2022spring/problems/ReWLAw/
 func numFlowers(roads [][]int) int {
-	return 0
+	dp := make([]int, len(roads)+1)
+	ret := 0
+	for _, v := range roads {
+		dp[v[0]]++
+		dp[v[1]]++
+		if ret < dp[v[0]] {
+			ret = dp[v[0]]
+		}
+		if ret < dp[v[1]] {
+			ret = dp[v[1]]
+		}
+	}
+	return ret + 1
+}
+
+//https://leetcode-cn.com/contest/cmbchina-2022spring/problems/Dk2Ytp/
+func lightSticks(height int, width int, indices []int) []int {
+	return nil
+}
+
+// This is the interface that allows for creating nested lists.
+// You should not implement it, or speculate about its implementation
+type NestedInteger struct {
+}
+
+// Return true if this NestedInteger holds a single integer, rather than a nested list.
+func (n NestedInteger) IsInteger() bool { return false }
+
+// Return the single integer that this NestedInteger holds, if it holds a single integer
+// The result is undefined if this NestedInteger holds a nested list
+// So before calling this method, you should have a check
+func (n NestedInteger) GetInteger() int { return 0 }
+
+// Set this NestedInteger to hold a single integer.
+func (n *NestedInteger) SetInteger(value int) {}
+
+// Set this NestedInteger to hold a nested list and adds a nested integer to it.
+func (n *NestedInteger) Add(elem NestedInteger) {}
+
+// Return the nested list that this NestedInteger holds, if it holds a nested list
+// The list length is zero if this NestedInteger holds a single integer
+// You can access NestedInteger's List element directly if you want to modify it
+func (n NestedInteger) GetList() []*NestedInteger { return nil }
+
+func deserialize(s string) *NestedInteger {
+	ns := &NestedInteger{}
+	if s[0] == '[' {
+		n := len(s)
+		var ls *NestedInteger
+		for i, si := 1, 1; i < n; i++ {
+			if s[i] == ',' || i == n-1 {
+				if ls == nil || (*ls).IsInteger() {
+					v, _ := strconv.Atoi(s[si:i])
+					ls = &NestedInteger{}
+					ls.SetInteger(v)
+					ns.Add(*ls)
+				}
+				si = i + 1
+			} else if s[i] == '[' {
+				j, cnt := i+1, 1
+				for {
+					if s[j] == '[' {
+						cnt++
+					} else if s[j] == ']' {
+						cnt--
+						if cnt == 0 {
+							break
+						}
+					}
+					j++
+				}
+				ls = deserialize(s[i : j+1])
+				ns.Add(*ls)
+				i = j
+				si = j + 1
+			}
+		}
+	} else {
+		v, _ := strconv.Atoi(s)
+		ns.SetInteger(v)
+	}
+	return ns
+}
+
+//https://leetcode-cn.com/problems/4sum/
+func fourSum(nums []int, target int) [][]int {
+	n := len(nums)
+	if n < 4 {
+		return nil
+	}
+	sort.Ints(nums)
+	var tmp []int
+	var ret [][]int
+	var dfs func(i, t int)
+	dfs = func(i, t int) {
+		t -= nums[i]
+		tl := len(tmp)
+		if tl == 2 {
+			for j := i + 1; j < n; j++ {
+				if t == nums[j] {
+					ret = append(ret, []int{tmp[0], tmp[1], nums[i], t})
+				}
+			}
+		} else {
+			tmp = append(tmp, nums[i])
+			for j := i + 1; j < n; j++ {
+				dfs(j, t)
+			}
+			tmp = tmp[:tl]
+		}
+	}
+	for i := 0; i <= n-4; i++ {
+		dfs(i, target)
+	}
+	return ret
+}
+
+func fourSumV2(nums []int, target int) (quadruplets [][]int) {
+	sort.Ints(nums)
+	n := len(nums)
+	for i := 0; i < n-3 && nums[i]+nums[i+1]+nums[i+2]+nums[i+3] <= target; i++ {
+		if i > 0 && nums[i] == nums[i-1] || nums[i]+nums[n-3]+nums[n-2]+nums[n-1] < target {
+			continue
+		}
+		for j := i + 1; j < n-2 && nums[i]+nums[j]+nums[j+1]+nums[j+2] <= target; j++ {
+			if j > i+1 && nums[j] == nums[j-1] || nums[i]+nums[j]+nums[n-2]+nums[n-1] < target {
+				continue
+			}
+			for left, right := j+1, n-1; left < right; {
+				if sum := nums[i] + nums[j] + nums[left] + nums[right]; sum == target {
+					quadruplets = append(quadruplets, []int{nums[i], nums[j], nums[left], nums[right]})
+					for left++; left < right && nums[left] == nums[left-1]; left++ {
+					}
+					for right--; left < right && nums[right] == nums[right+1]; right-- {
+					}
+				} else if sum < target {
+					left++
+				} else {
+					right--
+				}
+			}
+		}
+	}
+	return
 }
