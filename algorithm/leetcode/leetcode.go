@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"math/bits"
 	"sort"
 	"strconv"
@@ -580,4 +581,144 @@ func fourSumV2(nums []int, target int) (quadruplets [][]int) {
 		}
 	}
 	return
+}
+
+//https://leetcode-cn.com/problems/most-common-word/
+func mostCommonWord(paragraph string, banned []string) string {
+	bm := map[string]int{}
+	for _, s := range banned {
+		bm[s] = math.MinInt
+	}
+	symble := map[byte]bool{}
+	for _, c := range " !?',;." {
+		symble[byte(c)] = true
+	}
+	var ret string
+	cnt, n := 0, len(paragraph)
+	var bs []byte
+	for i := 0; i <= n; i++ {
+		if i == n || symble[paragraph[i]] {
+			if len(bs) > 0 {
+				s := string(bs)
+				bm[s]++
+				if cnt < bm[s] {
+					ret, cnt = s, bm[s]
+				}
+				bs = bs[:0]
+			}
+		} else {
+			c := paragraph[i]
+			if c >= 'A' && c <= 'Z' {
+				c += 'a' - 'A'
+			}
+			bs = append(bs, c)
+		}
+	}
+	return ret
+}
+
+//https://leetcode-cn.com/problems/lexicographical-numbers/
+func lexicalOrder(n int) []int {
+	var ret []int
+	var bfs func(pv int) bool
+	bfs = func(pv int) bool {
+		for l, r := pv*10, min(pv*10+9, n); l <= r; l++ {
+			ret = append(ret, l)
+			if len(ret) == n || bfs(l) {
+				return true
+			}
+		}
+		return false
+	}
+	for i := 1; i <= 9; i++ {
+		ret = append(ret, i)
+		if len(ret) == n || bfs(i) {
+			break
+		}
+	}
+	return ret
+}
+
+//https://leetcode-cn.com/problems/permutations-ii/
+func permuteUnique(nums []int) [][]int {
+	sort.Ints(nums)
+	var ret [][]int
+	n := len(nums)
+	cache := make([]bool, n)
+	var bfs func(tmp []int)
+	bfs = func(tmp []int) {
+		tn := len(tmp)
+		tmp = append(tmp, 0)
+		for i := 0; i < n; i++ {
+			if cache[i] || (i > 0 && !cache[i-1] && nums[i-1] == nums[i]) {
+				continue
+			}
+			tmp[tn] = nums[i]
+			if tn+1 == n {
+				t := make([]int, n)
+				copy(t, tmp)
+				ret = append(ret, t)
+			} else {
+				cache[i] = true
+				bfs(tmp)
+				cache[i] = false
+			}
+		}
+	}
+	bfs(nil)
+	return ret
+}
+
+//https://leetcode-cn.com/problems/combination-sum-ii/
+func combinationSum2(candidates []int, target int) [][]int {
+	sort.Ints(candidates)
+	var ret [][]int
+	n := len(candidates)
+	cache := make([]bool, n)
+	var bfs func(li, t int, tmp []int)
+	bfs = func(li, t int, tmp []int) {
+		tn := len(tmp)
+		tmp = append(tmp, 0)
+		for i := li + 1; i < n && candidates[i] <= t; i++ {
+			if cache[i] || (i > 0 && !cache[i-1] && candidates[i-1] == candidates[i]) {
+				continue
+			}
+			tmp[tn] = candidates[i]
+			if t == candidates[i] {
+				t := make([]int, len(tmp))
+				copy(t, tmp)
+				ret = append(ret, t)
+			} else {
+				cache[i] = true
+				bfs(i, t-candidates[i], tmp)
+				cache[i] = false
+			}
+		}
+	}
+	bfs(-1, target, nil)
+	return ret
+}
+
+//https://leetcode-cn.com/problems/shortest-distance-to-a-character/
+func shortestToChar(s string, c byte) []int {
+	n, lastMatch := len(s), -1
+	ret := make([]int, n)
+	for i := 0; i < n; i++ {
+		if s[i] == c {
+			ret[i] = 0
+			for j := i - 1; j > lastMatch; j-- {
+				if ret[j] == 0 {
+					ret[j] = i - j
+				} else if i-j < ret[j] {
+					ret[j] = i - j
+				} else {
+					break
+				}
+			}
+			lastMatch = i
+		} else if lastMatch >= 0 {
+			ret[i] = i - lastMatch
+		}
+	}
+	return ret
 }
