@@ -1040,3 +1040,38 @@ func insertionSortList(head *ListNode) *ListNode {
 	}
 	return head
 }
+
+//https://leetcode-cn.com/problems/longest-repeating-character-replacement/
+func characterReplacement(s string, k int) int {
+	dict := [26]int{}
+	n, i, j, maxV := len(s), 0, 0, 0
+	for j < n {
+		dict[s[j]-'A']++
+		if maxV < dict[s[j]-'A'] {
+			maxV = dict[s[j]-'A']
+		}
+		if j-i+1-maxV > k {
+			dict[s[i]-'A']--
+			i++
+		}
+		j++
+	}
+	return j - i
+}
+
+//https://leetcode-cn.com/problems/find-the-winner-of-the-circular-game/
+func findTheWinner(n int, k int) int {
+	q := make([]int, n)
+	for i := 0; i < n; i++ {
+		q[i] = i + 1
+	}
+	start := 0
+	for n > 1 {
+		start = (start + k - 1) % n
+		for i := start; i < n-1; i++ {
+			q[i] = q[i+1]
+		}
+		n--
+	}
+	return q[0]
+}
