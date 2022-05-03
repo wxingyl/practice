@@ -949,5 +949,94 @@ func reorderList(head *ListNode) {
 
 //https://leetcode-cn.com/problems/repeated-dna-sequences/
 func findRepeatedDnaSequences(s string) []string {
-	return nil
+	const N, TAG = 10, 1<<20 - 1
+	n := len(s)
+	if n <= N {
+		return nil
+	}
+	dict := map[byte]int{'A': 0, 'C': 1, 'G': 2, 'T': 3}
+	m := map[int]int{}
+	v := dict[s[0]]
+	for i := 1; i < N; i++ {
+		v = v<<2 | dict[s[i]]
+	}
+	m[v]++
+	var ret []string
+	for i := N; i < n; i++ {
+		v = (v<<2 | dict[s[i]]) & TAG
+		m[v]++
+		if m[v] > 1 {
+			ret = append(ret, s[i-9:i+1])
+		}
+	}
+	return ret
+}
+
+//https://leetcode-cn.com/problems/compare-version-numbers/
+func compareVersion(version1 string, version2 string) int {
+	parse := func(s string) ([]int, int) {
+		arr := strings.Split(s, ".")
+		n := len(arr)
+		vals := make([]int, n)
+		for i, v := range arr {
+			j, m := 0, len(v)
+			for j < m && v[j] == '0' {
+				j++
+			}
+			if j < m {
+				vals[i], _ = strconv.Atoi(v[j:])
+			}
+		}
+		for n > 0 && vals[n-1] == 0 {
+			n--
+		}
+		return vals, n
+	}
+	v1, n1 := parse(version1)
+	v2, n2 := parse(version2)
+	for i := 0; i < n1 && i < n2; i++ {
+		if v1[i] > v2[i] {
+			return 1
+		} else if v1[i] < v2[i] {
+			return -1
+		}
+	}
+	if n1 == n2 {
+		return 0
+	} else if n1 > n2 {
+		return 1
+	} else {
+		return -1
+	}
+}
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+//  https://leetcode-cn.com/problems/insertion-sort-list/
+func insertionSortList(head *ListNode) *ListNode {
+	node, last := head.Next, head
+	for node != nil {
+		if last.Val > node.Val {
+			nn := node.Next
+			if head.Val > node.Val {
+				node.Next, head = head, node
+			} else {
+				p := head
+				for p.Next != nil && p.Next.Val <= node.Val {
+					p = p.Next
+				}
+				p.Next, node.Next = node, p.Next
+			}
+			last.Next, node = nil, nn
+		} else {
+			last.Next = node
+			last, node = node, node.Next
+		}
+	}
+	return head
 }
