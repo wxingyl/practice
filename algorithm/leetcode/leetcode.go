@@ -722,3 +722,232 @@ func shortestToChar(s string, c byte) []int {
 	}
 	return ret
 }
+
+//https://leetcode-cn.com/problems/jump-game-ii/
+func jump(nums []int) int {
+	n := len(nums)
+	if n == 1 {
+		return 0
+	}
+	cache := make([]int, n)
+	var dfs func(i int) int
+	dfs = func(i int) int {
+		maxVal := nums[i] + i
+		if maxVal >= n-1 {
+			cache[i] = 1
+			return 1
+		}
+		v := n
+		for j := 1; j <= nums[i]; j++ {
+			if nums[i+j] != 0 {
+				if cache[i+j] > 0 {
+					v = min(cache[i+j], v)
+				} else {
+					v = min(dfs(i+j), v)
+				}
+			}
+		}
+		cache[i] = v + 1
+		return cache[i]
+	}
+	return dfs(0)
+}
+
+//https://leetcode-cn.com/problems/combinations/
+func combine(n int, k int) [][]int {
+	var bfs func(nums []int, n, k int) [][]int
+	bfs = func(nums []int, n, k int) [][]int {
+		if k == 1 {
+			ret := make([][]int, n)
+			for i := 0; i < n; i++ {
+				ret[i] = []int{nums[i]}
+			}
+			return ret
+		} else if n == k {
+			ret := make([]int, n)
+			copy(ret, nums)
+			return [][]int{ret}
+		} else {
+			ar := make([]int, n)
+			var ret [][]int
+			copy(ar, nums)
+			for i := n - 1; i >= k-1; i-- {
+				subArr := bfs(ar, i, k-1)
+				for _, sr := range subArr {
+					sr = append(sr, ar[i])
+					ret = append(ret, sr)
+				}
+			}
+			return ret
+		}
+	}
+	nums := make([]int, n)
+	for i := 0; i < n; i++ {
+		nums[i] = i + 1
+	}
+	return bfs(nums, n, k)
+}
+
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Left *Node
+ *     Right *Node
+ *     Next *Node
+ * }
+ */
+// https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/
+func connect(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+	s, n := []*Node{root}, 1
+	for n > 0 {
+		for i := 0; i < n; i++ {
+			if s[i].Left != nil {
+				s = append(s, s[i].Left)
+			}
+			if s[i].Right != nil {
+				s = append(s, s[i].Right)
+			}
+		}
+		s = s[n:]
+		n = len(s)
+		for i := 1; i < n; i++ {
+			s[i-1].Next = s[i]
+		}
+	}
+	return root
+}
+
+// https://leetcode-cn.com/problems/pascals-triangle-ii/
+func getRow(rowIndex int) []int {
+	n := rowIndex + 1
+	ret := make([]int, n)
+	ret[0] = 1
+	half := n >> 1
+	if n > 1 && (n&1) == 1 {
+		half++
+	}
+	for i := 1; i <= half; i++ {
+		ret[i] = ret[i-1] * (n - i) / i
+	}
+	for i := rowIndex; i > half; i-- {
+		ret[i] = ret[rowIndex-i]
+	}
+	return ret
+}
+
+//https://leetcode-cn.com/problems/triangle/
+func minimumTotal(triangle [][]int) int {
+	n := len(triangle)
+	if n == 1 {
+		return triangle[0][0]
+	}
+	p, dp := make([]int, n-1), make([]int, n)
+	dp[0] = triangle[0][0]
+	for i := 1; i < n; i++ {
+		pn := i
+		for j := 0; j < pn; j++ {
+			p[j] = dp[j]
+		}
+		for j := 0; j <= i; j++ {
+			if j == 0 {
+				dp[j] = p[j]
+			} else if j == i {
+				dp[j] = p[i-1]
+			} else {
+				dp[j] = min(p[j], p[j-1])
+			}
+			dp[j] += triangle[i][j]
+		}
+	}
+	v := dp[0]
+	for i := 1; i < n; i++ {
+		if v > dp[i] {
+			v = dp[i]
+		}
+	}
+	return v
+}
+
+// https://leetcode-cn.com/problems/reorder-data-in-log-files/
+func reorderLogFiles(logs []string) []string {
+	parse := func(s string) (bool, string) {
+		i := strings.IndexByte(s, ' ')
+		if s[i+1] >= '0' && s[i+1] <= '9' {
+			return true, ""
+		} else {
+			return false, s[i+1:]
+		}
+	}
+	sort.SliceStable(logs, func(i, j int) bool {
+		numTag1, s1 := parse(logs[i])
+		numTag2, s2 := parse(logs[j])
+		if numTag1 && numTag2 {
+			return false
+		} else if numTag1 || numTag2 {
+			return !numTag1
+		} else {
+			return s1 < s2 || s1 == s2 && logs[i] < logs[j]
+		}
+	})
+	return logs
+}
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+//https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
+func sumNumbers(root *TreeNode) int {
+	ret := 0
+	var dfs func(node *TreeNode, v int)
+	dfs = func(node *TreeNode, v int) {
+		v = node.Val + 10*v
+		if node.Left == nil && node.Right == nil {
+			ret += v
+			return
+		}
+		if node.Left != nil {
+			dfs(node.Left, v)
+		}
+		if node.Right != nil {
+			dfs(node.Right, v)
+		}
+	}
+	if root != nil {
+		dfs(root, 0)
+	}
+	return ret
+}
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+//https://leetcode-cn.com/problems/reorder-list/
+func reorderList(head *ListNode) {
+	var link []*ListNode
+	for c := head; c != nil; c = c.Next {
+		link = append(link, c)
+	}
+	n := len(link)
+	for i, j := 0, n-1; i < j; i, j = i+1, j-1 {
+		link[i].Next, link[j].Next = link[j], link[i].Next
+	}
+	link[n>>1].Next = nil
+}
+
+//https://leetcode-cn.com/problems/repeated-dna-sequences/
+func findRepeatedDnaSequences(s string) []string {
+	return nil
+}
