@@ -1075,3 +1075,36 @@ func findTheWinner(n int, k int) int {
 	}
 	return q[0]
 }
+
+//https://leetcode.cn/problems/one-away-lcci/
+func oneEditAway(first string, second string) bool {
+	n1, n2 := len(first), len(second)
+	if abs(n1-n2) > 1 {
+		return false
+	}
+	cnt := 0
+	if n1 == n2 {
+		for i := 0; i < n1; i++ {
+			if first[i] != second[i] {
+				cnt++
+				if cnt > 1 {
+					return false
+				}
+			}
+		}
+		return true
+	} else if n1 > n2 {
+		n1, first, second = n2, second, first
+	}
+	for i := 0; i < n1; {
+		if first[i] == second[i+cnt] {
+			i++
+			continue
+		}
+		cnt++
+		if cnt > 1 {
+			return false
+		}
+	}
+	return true
+}
